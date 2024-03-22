@@ -29,14 +29,13 @@ vl53 = []
 
 # now change the addresses of the VL53L0X sensors
 
-
 for i, power_pin in enumerate(xshut):
-power_pin.value = True
-time.sleep(0.1)  # Aggiungi un ritardo prima di inizializzare il sensore
-vl53.insert(i, VL53L0X(i2c))
-if i < len(xshut):
-    vl53[i].set_address(i + 0x30)  # Indirizzo del sensore
-    time.sleep(0.1)  # Aggiungi un breve ritardo dopo aver cambiato l'indirizzo
+    power_pin.value = True
+    time.sleep(0.1)  # Aggiungi un ritardo prima di inizializzare il sensore
+    vl53.insert(i, VL53L0X(i2c))
+    if i < len(xshut):
+        vl53[i].set_address(i + 0x30)  # Indirizzo del sensore
+        time.sleep(0.1)  # Aggiungi un breve ritardo dopo aver cambiato l'indirizzo
 
 def detect_range():
         # Read three measurements

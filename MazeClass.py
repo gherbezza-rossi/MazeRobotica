@@ -122,21 +122,13 @@ class Maze(object):
         send_serial("s")
 
     def goRight(self):
-<<<<<<< HEAD
-        self.turnRight()
-=======
         self.turnLeft()
->>>>>>> 437351f (dfdv)
         send_serial("d")
         time.sleep(5)
         self.goFwd()        
 
     def goLeft(self):
-<<<<<<< HEAD
-        self.turnLeft()
-=======
         self.turnRight()
->>>>>>> 437351f (dfdv)
         send_serial("a")
         time.sleep(5)
         self.goFwd()        
@@ -221,11 +213,6 @@ class Maze(object):
         )
     
     def theFirstFunctionDISTANCE(self, right_distance, left_distance):
-<<<<<<< HEAD
-
-=======
-        print("distace")
->>>>>>> 437351f (dfdv)
         right = self.getRightBlock()
         left = self.getLeftBlock()
 
@@ -248,15 +235,8 @@ class Maze(object):
             self.goBkw()
 
 
-<<<<<<< HEAD
     def notBlockedOrVisited(self, direction):
         if direction == "r":
-=======
-    def blockedOrVisited(self, direction):
-        print("blockedvisited")
-        if direction == "r":
-            
->>>>>>> 437351f (dfdv)
             print(self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock() is not None)
             return self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock() is not None
         elif direction == "f":
@@ -267,13 +247,9 @@ class Maze(object):
             return True
     
     def notBlocked(self, direction):
-<<<<<<< HEAD
-        if direction == "r":
-=======
         print("blocked")
         if direction == "r":
             print(self.mapMaze[self.currentX][self.currentY].hasRightWall())
->>>>>>> 437351f (dfdv)
             return self.mapMaze[self.currentX][self.currentY].hasRightWall()
         elif direction == "f":
             return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
@@ -283,34 +259,16 @@ class Maze(object):
             return True
 
     def RR(self):
-<<<<<<< HEAD
-        if self.notBlockedOrVisited("r"):
-            self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-            self.goRight()
-        elif self.notBlockedOrVisited("f"):
-            self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-            self.goFwd()
-        elif self.notBlockedOrVisited("l"):
-            self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-            self.goLeft()
-        elif self.notBlocked("r"):
-            self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-            self.goRight()
-        elif self.notBlocked("f"):
-            self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-            self.goFwd()
-        elif self.notBlocked("l"):
-=======
         print("right rule")
-        if not self.blockedOrVisited("r"):
+        if not self.notBlockedOrVisited("r"):
             print("oviubriu")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goRight()
-        elif not self.blockedOrVisited("f"):
+        elif not self.notBlockedOrVisited("f"):
 
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goFwd()
-        elif not self.blockedOrVisited("l"):
+        elif not self.notBlockedOrVisited("l"):
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
         elif not self.notBlocked("r"):
@@ -321,13 +279,8 @@ class Maze(object):
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goFwd()
         elif not self.notBlocked("l"):
->>>>>>> 437351f (dfdv)
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
         else:
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
-<<<<<<< HEAD
             self.goBkw()
-=======
-            self.goBkw()
->>>>>>> 437351f (dfdv)

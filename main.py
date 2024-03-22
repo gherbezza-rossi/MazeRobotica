@@ -8,9 +8,6 @@ myMaze = Maze()
 first = True
     
 while True:
-    # here I need to get the data from the robot about the current block
-    # I am going to receive: walls, distance left right, other data u need to store
-    # I am also going to save the consequent number according to the blocks around
     dati_tof=detect_walls()
     print(dati_tof)
     dati = dati_tof.split()
