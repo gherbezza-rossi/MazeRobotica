@@ -121,17 +121,15 @@ class Maze(object):
         print("going back")
         send_serial("s")
 
-    def goRight(self):
-        self.turnLeft()
-        send_serial("d")
-        time.sleep(5)
-        self.goFwd()        
-
     def goLeft(self):
         self.turnRight()
         send_serial("a")
-        time.sleep(5)
-        self.goFwd()        
+        time.sleep(3)        
+
+    def goRight(self):
+        self.turnLeft()
+        send_serial("d")
+        time.sleep(3)       
 
     def isVisitedAllAround(self): #
         right = self.getRightBlock()
