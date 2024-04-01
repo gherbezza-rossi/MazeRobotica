@@ -1,12 +1,21 @@
 
-from Desktop.robot_git.MazeSirio.python.lettura_encoder import *
+from lettura_encoder import *
 import time
 from percorso import *
-from tof import *
+from servo import *
 
+
+
+def send_medikit():    
+    pwm.start(angle_to_percent(180))
+    time.sleep(1)
+    pwm.ChangeDutyCycle(angle_to_percent(135))
+    time.sleep(1)
+    pwm.stop()
+    GPIO.cleanup()
+    
 
 while True:
-    print(detect_walls())
     messaggio_da_inviare = input("Inserisci il messaggio da inviare: ")
     if messaggio_da_inviare == "a":
         calcolo_posizione("a")
@@ -19,3 +28,7 @@ while True:
         send_serial(messaggio_da_inviare)
     elif messaggio_da_inviare == "d":
         send_serial(messaggio_da_inviare)
+    elif messaggio_da_inviare == "m":
+        GPIO.setup(pwm_gpio, GPIO.OUT)
+        pwm = GPIO.PWM(pwm_gpio, frequence)
+        send_medikit()

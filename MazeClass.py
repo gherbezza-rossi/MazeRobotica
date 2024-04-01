@@ -1,5 +1,5 @@
 from BlockClass import Block
-from Desktop.robot_git.MazeSirio.python.lettura_encoder import *
+from python.lettura_encoder import *
 
 MAX_Y = 500
 MAX_X = 500

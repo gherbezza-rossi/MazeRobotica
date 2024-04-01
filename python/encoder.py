@@ -1,9 +1,6 @@
 import RPi.GPIO as GPIO
 import time
 
-# GPIO Setup
-GPIO.setmode(GPIO.BOARD)
-GPIO.setwarnings(False)
 
 enc_Al_pin = 13
 enc_Ar_pin = 15
