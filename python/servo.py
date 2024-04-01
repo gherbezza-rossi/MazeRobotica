@@ -18,5 +18,5 @@ def angle_to_percent (angle) :
     return start + angle_as_percent
 
 
-pwm_gpio = 13
+pwm1_gpio = 13
 frequence = 50
