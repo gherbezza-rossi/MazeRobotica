@@ -1,5 +1,5 @@
 
-from serial_test import *
+from Desktop.robot_git.MazeSirio.python.lettura_encoder import *
 import time
 from percorso import *
 from tof import *
