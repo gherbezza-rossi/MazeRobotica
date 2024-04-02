@@ -5,17 +5,20 @@ import time
 
 
 #Set function to calculate percent from angle
-def angle_to_percent (angle) :
-    if angle > 180 or angle < 0 :
+def angle_to_percent(angle):
+    if angle > 180 or angle < 0:
         return False
+    else:
+        start = 4
+        end = 12.5
+        ratio = (end - start) / 180  # Calcol ratio da angolo a percentuale
 
-    start = 4
-    end = 12.5
-    ratio = (end - start)/180 #Calcul ratio from angle to percent
-
-    angle_as_percent = angle * ratio
+        angle_as_percent = angle * ratio
+        if angle_as_percent > end:  # Assicura che il valore non superi il limite massimo
+            angle_as_percent = end
 
     return start + angle_as_percent
+
 
 
 pwm1_gpio = 13

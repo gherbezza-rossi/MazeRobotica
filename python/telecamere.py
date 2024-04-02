@@ -38,14 +38,11 @@ def take_image2():
 		cv2.imwrite(img_name2, frame2)
 		print("written!")
 		bgr_img2 = cv2.imread("/home/sirio/Desktop/opencv_frame2.png")  # Load the image
-		gry_img2 = cv2.cvtColor(bgr_img2, cv2.COLOR_BGR2GRAY)
-		gry_img2 = cv2.bilateralFilter(gry_img2, 11, 17, 17)
-		thresh2 = cv2.adaptiveThreshold(gry_img2, 255,
-		cv2.ADAPTIVE_THRESH_MEAN_C, cv2.THRESH_BINARY, 21, 10)
-		border_img2 = cv2.copyMakeBorder(thresh2, 50, 50, 50, 50, cv2.BORDER_CONSTANT, value=255)
-		cv2.imwrite("/home/sirio/Desktop/thresh_image2.png", border_img2)
-		txt2 = pytesseract.image_to_string(border_img2, config='--psm 6')
-		return(txt2) 
+		grigio = cv2.cvtColor(bgr_img2, cv2.COLOR_BGR2GRAY)
+		_, soglia = cv2.threshold(grigio, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
+		cv2.imwrite("/home/sirio/Desktop/thresh_image2.png", soglia)
+		testo = pytesseract.image_to_string(soglia , config='--psm 6')
+		return(testo) 
 
 def close_camera1():
 	cam1.release()
@@ -54,3 +51,5 @@ def close_camera1():
 def close_camera2():
 	cam2.release()
 	cv2.destroyAllWindows()
+
+print(take_image2())
