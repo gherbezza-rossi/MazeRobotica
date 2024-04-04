@@ -7,7 +7,7 @@ cam2 = cv2.VideoCapture(2)
 
 img_counter = 0
 
-def take_image1():
+def take_image_right():
 	ret1, frame1 = cam1.read()
 	if not ret1:
 		print("failed to grab frame")
@@ -29,7 +29,7 @@ def take_image1():
 		return(txt1)
   
   
-def take_image2():
+def take_image_left():
 	ret2, frame2 = cam2.read()
 	if not ret2:
 		print("failed to grab frame")
@@ -44,12 +44,12 @@ def take_image2():
 		testo = pytesseract.image_to_string(soglia , config='--psm 6')
 		return(testo) 
 
-def close_camera1():
+def close_camera_right():
 	cam1.release()
 	cv2.destroyAllWindows()
 
-def close_camera2():
+def close_camera_left():
 	cam2.release()
 	cv2.destroyAllWindows()
 
-print(take_image2())
+print(take_image_left())

@@ -23,13 +23,19 @@ sensor = adafruit_tcs34725.TCS34725(i2c)
 def read_color():
     # Raw data from the sensor in a 4-tuple of red, green, blue, clear light component values
     # print(sensor.color_raw)
-    color_rgb = sensor.color_rgb_bytes
+    sensor.integration_time = 200
+    sensor.gain = 60
+    color_rgb=sensor.color_rgb_bytes
     print(color_rgb)
-    color_rgb=str(color_rgb)
 
-    if color_rgb=="(9, 16, 16)":
+    if color_rgb[0]==2:
         print("bianco")
-    elif color_rgb=="(16, 33, 33)":
+    elif color_rgb[1]>12 and color_rgb[1]<20:
         print("blu")
-    elif color_rgb=="(8, 16, 16)" or color_rgb=="(8, 28, 16)":
+    elif color_rgb[1]>8 and color_rgb[1]<11:
         print("nero")
+    elif color_rgb[2]>200:
+        print("specchio")
+
+while True:
+    read_color()
