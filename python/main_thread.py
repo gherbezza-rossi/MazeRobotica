@@ -29,5 +29,7 @@ while True:
         send_serial(messaggio_da_inviare)
     elif messaggio_da_inviare == "d":
         send_serial(messaggio_da_inviare)
+    elif messaggio_da_inviare == "r":
+        send_serial(messaggio_da_inviare)
     elif messaggio_da_inviare == "mr":
         send_medikit_right()

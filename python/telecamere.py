@@ -51,5 +51,3 @@ def close_camera_right():
 def close_camera_left():
 	cam2.release()
 	cv2.destroyAllWindows()
-
-print(take_image_left())
