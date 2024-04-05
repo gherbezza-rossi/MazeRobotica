@@ -80,12 +80,12 @@ class Maze(object):
     def turnRight(self):
         self.orientation += 1
         self.orientation %= 4
-        print("orientation: " + str(self.orientation))
+        print("orientation after turning right: " + str(self.orientation))
 
     def turnLeft(self):
         self.orientation += 3
         self.orientation %= 4
-        print("orientation: " + str(self.orientation))
+        print("orientation after turning right: " + str(self.orientation))
 
     def goFwd(self):
         self.mapMaze[self.currentX][self.currentY].visited = 1
@@ -136,6 +136,7 @@ class Maze(object):
         self.goFwd()      
 
     def isVisitedAllAround(self): #
+        print("i need to know if there are blocks not visited")
         right = self.getRightBlock()
         if right is None:
             right = True
@@ -157,7 +158,7 @@ class Maze(object):
         return right and left and fwd
 
     def addBlockData(self, walls):
-
+        print("i received data and i am adding them")
         absolute_walls = walls
 
         if self.orientation == 1:
@@ -185,6 +186,8 @@ class Maze(object):
         print(self.mapMaze[self.currentX][self.currentY].walls)
 
     def assignNumber(self):
+        print("i ma assigning a number")
+
         right = self.getRightBlock()
         if right is None:
             right = MAX_VALUE
@@ -215,74 +218,78 @@ class Maze(object):
         )
     
     def theFirstFunctionDISTANCE(self, right_distance, left_distance):
+
         right = self.getRightBlock()
         left = self.getLeftBlock()
 
         if right_distance == 1 and right is not None and right.isVisited() == 0:
-            print(right_distance == 1)
-            print(right is not None)
-            print(right.isVisited() == 0)
+            print("i have found a empty room in the right")
             self.goRight()
             self.emptyGoing()
         elif left_distance == 1 and left is not None and left.isVisited() == 0:
-            print("werbvrvwe")
+            print("i have found a empty room in the left")
             self.goLeft()
             self.emptyGoing()
 
     def emptyGoing(self):
         while self.mapMaze[self.currentX][self.currentY].hasWalls() == 0:
+            print("i am going into an empty room")
             self.goFwd()
+            # TODO: read block data
 
         while self.mapMaze[self.currentX][self.currentY].respectedRR == 0:
+            print("i am coming back from an empty room")
             self.goBkw()
 
 
-    def notBlockedOrVisited(self, direction):
+    def blockedAndVisited(self, direction):
         if direction == "r":
-            print(self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock() is not None)
-            return self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock() is not None
+            return self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock().isVisited()
         elif direction == "f":
-            return self.mapMaze[self.currentX][self.currentY].hasFrontWall() and self.getFwdBlock() is not None
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall() and self.getFwdBlock().isVisited()
         elif direction == "l":
-            return self.mapMaze[self.currentX][self.currentY].hasLeftWall() and self.getLeftBlock() is not None
+            return self.mapMaze[self.currentX][self.currentY].hasLeftWall() and self.getLeftBlock().isVisited()
         else:
             return True
     
-    def notBlocked(self, direction):
-        print("blocked")
+    def blocked(self, direction):
         if direction == "r":
-            print(self.mapMaze[self.currentX][self.currentY].hasRightWall())
             return self.mapMaze[self.currentX][self.currentY].hasRightWall()
         elif direction == "f":
             return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
         elif direction == "l":
             return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
         else:
-            return True
+            return False
 
     def RR(self):
         print("right rule")
-        if not self.notBlockedOrVisited("r"):
-            print("oviubriu")
+        if not self.blockedAndVisited("r"):
+            print("I can go to the right, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goRight()
-        elif not self.notBlockedOrVisited("f"):
-
+        elif not self.blockedAndVisited("f"):
+            print("I can go fwd, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goFwd()
-        elif not self.notBlockedOrVisited("l"):
+        elif not self.blockedAndVisited("l"):
+            print("I can go to the left, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
-        elif not self.notBlocked("r"):
-            print("iewbu")
+        elif not self.blocked("r"):
+            print("I can go to the right, respecting the right rule even if visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goRight()
-        elif not self.notBlocked("f"):
+        elif not self.blocked("f"):
+            print("I can go fwd, respecting the right rule even if visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goFwd()
-        elif not self.notBlocked("l"):
+        elif not self.blocked("l"):
+            print("I can go to the left, respecting the right rule even if visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
         else:
+            print("i cannot go anywhere, i have to go back")
+            # TODO: turn and search for victims
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goBkw()
