@@ -328,9 +328,9 @@ void loop() {
           break;
         case 'r':
           float currentAngle = event.orientation.x;
-          if(currentAngle-angle<0){
+          if(currentAngle>=180){
             destra();
-          }else{
+          }else if(currentAngle<270){
             sinistra();
           }
           angle=angle;
