@@ -69,9 +69,10 @@ void loop() {
     Serial.print(" cacca");
     Serial.print(cacca);
     if(cacca>500 && (yangle<2 && yangle>-2)){
-      Serial.print("non più inclinato");
+      Serial.println("non più inclinato");
       delay(700);
       cacca=0;
+      Serial.println("completata salita");
       stop();
       prev_command="q";
     }else{

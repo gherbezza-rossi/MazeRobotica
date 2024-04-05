@@ -63,6 +63,7 @@ def send_serial(a):
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
+                print(counter_A)
                 if(counter_A<-3200): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     q=str("q")
                     ser.write(q.encode('utf-8'))
@@ -75,8 +76,6 @@ def send_serial(a):
                 # stop loop in time = period
                 if time.time() > start + period : break
             if miao =="finito" : 
-                r=str("r")
-                ser.write(r.encode('utf-8'))
                 break
 
             
@@ -95,11 +94,10 @@ def send_serial(a):
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                print(counter_A)
                 if(counter_A>3200): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     q=str("q")
                     ser.write(q.encode('utf-8'))
-                    time.slee(1)
+                    time.sleep(1)
                     counter_A=0
                     last_AA=0
                     miao="finito"
@@ -107,8 +105,12 @@ def send_serial(a):
         
                 # stop loop in time = period
                 if time.time() > start + period : break
-            if miao =="finito" : 
+            if miao =="finito" :
+                r=str("r")
+                ser.write(r.encode('utf-8')) 
                 break
+
+
     elif a=="a" or a=="d" or a=="r":
         a=a.encode('utf-8')
         ser.write(a)

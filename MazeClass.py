@@ -104,6 +104,8 @@ class Maze(object):
 
         print("Going fwd")
         send_serial("w")
+        time.sleep(3)
+        send_serial("r")
 
     def goBkw(self):
         if self.orientation == 0:

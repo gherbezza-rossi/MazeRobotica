@@ -8,7 +8,7 @@ if user_input.lower() in ["yes", "no"]:
         print("settaggio sensore colori")
        # from python.color_sensor import *
         print("settaggio telecamere")
-        from python.telecamere import *
+       # from python.telecamere import *
         from python.led_control import *
 
 
