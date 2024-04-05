@@ -75,6 +75,8 @@ def send_serial(a):
                 # stop loop in time = period
                 if time.time() > start + period : break
             if miao =="finito" : 
+                r=str("r")
+                ser.write(r.encode('utf-8'))
                 break
 
             

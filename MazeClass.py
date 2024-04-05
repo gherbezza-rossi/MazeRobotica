@@ -104,7 +104,6 @@ class Maze(object):
 
         print("Going fwd")
         send_serial("w")
-        send_serial("r")
 
     def goBkw(self):
         if self.orientation == 0:
@@ -121,7 +120,6 @@ class Maze(object):
 
         print("going back")
         send_serial("s")
-        send_serial("r")
 
     def goLeft(self):
         self.turnRight()

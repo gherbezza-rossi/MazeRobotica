@@ -41,8 +41,8 @@ def start():
       
       # ----------------------------  altre cose che deve fare robot ---------------------------------
       
-      dati_camera1 = take_image_right()
-      close_camera_right()
+     # dati_camera1 = take_image_right()
+     # close_camera_right()
       #print(dati_camera1[0])
       #if dati_camera1[0] == "U":
       #    mao=0
@@ -53,8 +53,8 @@ def start():
     #         led_off()
     #         time.sleep(0.25)
     #         mao=mao+0.5
-      dati_camera2 = take_image_left()
-      close_camera_left()
+      #dati_camera2 = take_image_left()
+      #close_camera_left()
     #  dati_camera2=dati_camera2.replace(" ", "") 
     #  print(dati_camera2)
     #  if dati_camera2 == "U":

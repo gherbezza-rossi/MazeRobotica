@@ -57,7 +57,7 @@ void setup() {
  
 void loop() {
   sensors_event_t event; 
-  bno.getEvent(&event);
+  bno.getEvent(&event); 
   if(prev_command=="w"){
     float currentAngle = event.orientation.x;
     float yangle = event.orientation.y;
