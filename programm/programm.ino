@@ -22,7 +22,7 @@ int pot;
 int out;
 float angle = 0.00;
 String prev_command="";
-bool cacca = false;
+int cacca = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -62,95 +62,99 @@ void loop() {
     float currentAngle = event.orientation.x;
     float yangle = event.orientation.y;
     Serial.print(yangle);
-    if(yangle>5){
-      cacca=true;
+    if(yangle>2 || yangle<-2){
+      cacca=cacca+1;
       Serial.print("inclinato");
-    }else if(cacca==true && yangle<5){
+    }
+    Serial.print(" cacca");
+    Serial.print(cacca);
+    if(cacca>500 && (yangle<2 && yangle>-2)){
       Serial.print("non più inclinato");
-      cacca=false;
+      delay(700);
+      cacca=0;
       stop();
-      prev_command="w";
-    }
-    if(currentAngle>270){
-      if(angle==0){
-        angle=360;
+      prev_command="q";
+    }else{
+      if(currentAngle>270){
+        if(angle==0){
+          angle=360;
+        }
+      }else if(currentAngle<270){
+        if(angle==360){
+          angle=0;
+        }
       }
-    }else if(currentAngle<270){
-      if(angle==360){
-        angle=0;
-      }
-    }
-      if(currentAngle<angle+0.3 && currentAngle>angle-0.3){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 100);
-      }else if(currentAngle>angle+3){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 30);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 30);
-      }else if(currentAngle<angle-3){
-        analogWrite(MD_PWM2, 30);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 30);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle>angle+1){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 50);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 50);
-      }else if(currentAngle<angle-1){
-        analogWrite(MD_PWM2, 50);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 50);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle>angle+0.5){
-        analogWrite(MD_PWM2, 60);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 60);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle<angle-0.5){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 60);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 60);
-      }else if(currentAngle>angle+0.3){
-        analogWrite(MD_PWM2, 70);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 70);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle<angle-0.3){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 70);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 70);
-      }else if(currentAngle>angle+0.2){
-        analogWrite(MD_PWM2, 80);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 80);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle<angle-0.2){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 80);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 80);
-      }else if(currentAngle>angle+0.1){
-        analogWrite(MD_PWM2, 90);
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MA_PWM2, 90);
-        analogWrite(MA_PWM1, 100);
-      }else if(currentAngle<angle-0.1){
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MD_PWM1, 90);
-        analogWrite(MA_PWM2, 100);
-        analogWrite(MA_PWM1, 90);
-      }
+        if(currentAngle<angle+0.3 && currentAngle>angle-0.3){
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MA_PWM1, 100);
+          analogWrite(MA_PWM2, 100);
+        }else if(currentAngle>angle+3){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 30);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 30);
+        }else if(currentAngle<angle-3){
+          analogWrite(MD_PWM2, 30);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 30);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle>angle+1){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 50);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 50);
+        }else if(currentAngle<angle-1){
+          analogWrite(MD_PWM2, 50);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 50);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle>angle+0.5){
+          analogWrite(MD_PWM2, 60);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 60);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle<angle-0.5){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 60);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 60);
+        }else if(currentAngle>angle+0.3){
+          analogWrite(MD_PWM2, 70);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 70);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle<angle-0.3){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 70);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 70);
+        }else if(currentAngle>angle+0.2){
+          analogWrite(MD_PWM2, 80);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 80);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle<angle-0.2){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 80);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 80);
+        }else if(currentAngle>angle+0.1){
+          analogWrite(MD_PWM2, 90);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 90);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle<angle-0.1){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 90);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 90);
+        }    
     Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
     Serial.println(currentAngle);
-      
+    }
   }
   else if(prev_command=="s")
   {
@@ -292,7 +296,7 @@ void loop() {
           prev_command="w";
           break;
         case 'q':
-          if(cacca==false && yangle<5){
+          if(cacca==0){
             stop();
             prev_command="q";
           }
