@@ -125,13 +125,13 @@ class Maze(object):
         send_serial("s")
 
     def goLeft(self):
-        self.turnRight()
+        self.turnLeft()
         send_serial("a")
         time.sleep(3)   
         self.goFwd()     
 
     def goRight(self):
-        self.turnLeft()
+        self.turnRight()
         send_serial("d")
         time.sleep(3) 
         self.goFwd()      
@@ -163,10 +163,10 @@ class Maze(object):
         absolute_walls = walls
 
         if self.orientation == 1:
-            absolute_walls[0] = walls[1]
-            absolute_walls[1] = walls[2]
-            absolute_walls[2] = walls[3]
-            absolute_walls[3] = walls[0]
+            absolute_walls[1] = walls[0]
+            absolute_walls[2] = walls[1]
+            absolute_walls[3] = walls[2]
+            absolute_walls[0] = walls[3]
 
         elif self.orientation == 2:
             absolute_walls[0] = walls[2]
@@ -175,16 +175,16 @@ class Maze(object):
             absolute_walls[3] = walls[1]
 
         elif self.orientation == 3:
-            absolute_walls[0] = walls[3]
-            absolute_walls[1] = walls[0]
-            absolute_walls[2] = walls[1]
-            absolute_walls[3] = walls[2]
+            absolute_walls[0] = walls[1]
+            absolute_walls[1] = walls[2]
+            absolute_walls[2] = walls[3]
+            absolute_walls[3] = walls[0]
 
 
         self.mapMaze[self.currentX][self.currentY].walls = absolute_walls
         self.mapMaze[self.currentX][self.currentY].data = ""
         self.mapMaze[self.currentX][self.currentY].setAsVisited()
-        print(self.mapMaze[self.currentX][self.currentY].walls)
+        print("absolute walls: ", self.mapMaze[self.currentX][self.currentY].walls)
 
     def assignNumber(self):
         print("i ma assigning a number")
@@ -244,13 +244,19 @@ class Maze(object):
             self.goBkw()
 
 
-    def blockedAndVisited(self, direction):
+    def notBlockedAndNotVisited(self, direction):
         if direction == "r":
-            return self.mapMaze[self.currentX][self.currentY].hasRightWall() and self.getRightBlock().isVisited()
+            if self.getRightBlock() is None:
+                return False
+            return not self.mapMaze[self.currentX][self.currentY].hasRightWall() and not self.getRightBlock().isVisited()
         elif direction == "f":
-            return self.mapMaze[self.currentX][self.currentY].hasFrontWall() and self.getFwdBlock().isVisited()
+            if self.getFwdBlock() is None:
+                return False
+            return not self.mapMaze[self.currentX][self.currentY].hasFrontWall() and not self.getFwdBlock().isVisited()
         elif direction == "l":
-            return self.mapMaze[self.currentX][self.currentY].hasLeftWall() and self.getLeftBlock().isVisited()
+            if self.getLeftBlock() is None:
+                return False
+            return not self.mapMaze[self.currentX][self.currentY].hasLeftWall() and not self.getLeftBlock().isVisited()
         else:
             return True
     
@@ -266,15 +272,15 @@ class Maze(object):
 
     def RR(self):
         print("right rule")
-        if not self.blockedAndVisited("r"):
+        if self.notBlockedAndNotVisited("r"):
             print("I can go to the right, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goRight()
-        elif not self.blockedAndVisited("f"):
+        elif self.notBlockedAndNotVisited("f"):
             print("I can go fwd, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goFwd()
-        elif not self.blockedAndVisited("l"):
+        elif self.notBlockedAndNotVisited("l"):
             print("I can go to the left, respecting the right rule and not visited")
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
