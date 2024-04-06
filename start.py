@@ -22,6 +22,6 @@ try:
             run = False
             while not button.is_pressed:
                 time.sleep(0.1)
-
+ 
 except KeyboardInterrupt:
     print("Quit")
