@@ -1,4 +1,5 @@
 from BlockClass import Block
+from main import getValues
 from python.lettura_encoder import *
 
 MAX_Y = 500
@@ -235,6 +236,7 @@ class Maze(object):
         while self.mapMaze[self.currentX][self.currentY].hasWalls() == 0:
             print("i am going into an empty room")
             self.goFwd()
+            getValues(False)
             # TODO: read block data
 
         while self.mapMaze[self.currentX][self.currentY].respectedRR == 0:

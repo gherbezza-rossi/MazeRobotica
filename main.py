@@ -1,4 +1,7 @@
 from MazeClass import Maze
+
+myMaze = Maze()
+
 user_input = input("hai rimosso il cavo del sensore colori? (yes/no): ")
 if user_input.lower() in ["yes", "no"]:
     print("settaggio tof")
@@ -17,28 +20,31 @@ if user_input.lower() in ["yes", "no"]:
 else:
     print("Exiting...")
 
-def start():  
-  myMaze = Maze()
+def getValues(first):
+    dati_tof = detect_walls()
+    print(dati_tof)
+    dati = dati_tof.split()
+    left = dati[0]
+    front = dati[1]
+    right = dati[3]
 
+    walls = [left, front, right, 0]  # walls = [left, front, right, back]
+    if first:
+        walls[3] = 1
+
+    print("muri: ", walls)
+    myMaze.addBlockData(walls)
+    myMaze.assignNumber()
+    return walls, dati
+def start():
   first = True
         
   while True:
-      dati_tof=detect_walls()
-      print(dati_tof)
-      dati = dati_tof.split()
-      left=dati[0]
-      front=dati[1]
-      right=dati[3]
+      walls, dati = getValues(first)
+      first = False
 
-      walls = [left, front, right, 0]        # walls = [left, front, right, back]
-      if first:
-          walls[3] = 1
-          first = False
-      print("muri")
-      print(walls)
       right_distance = dati[4]
       left_distance = dati[5]
-      
       # ----------------------------  altre cose che deve fare robot ---------------------------------
       
      # dati_camera1 = take_image_right()
@@ -70,8 +76,7 @@ def start():
       #-------------------------------------------------------------------------------------------------
       
       
-      myMaze.addBlockData(walls)
-      myMaze.assignNumber()
+
 
       print("this is the general function that represents the algorithm that makes the robot move")
 
