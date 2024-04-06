@@ -11,16 +11,16 @@ print("Press Ctrl & C to Quit")
 try:
     run = False
     while True:
-        if button.is_pressed and not run:
+        if button.is_active and not run:
             print("Started")
             start()
             run = True
-            while button.is_pressed:
+            while button.is_active:
                 time.sleep(0.1)
-        if not button.is_pressed and run:
+        if not button.is_active and run:
             print("Stopped")
             run = False
-            while not button.is_pressed:
+            while not button.is_active:
                 time.sleep(0.1)
  
 except KeyboardInterrupt:
