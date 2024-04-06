@@ -36,10 +36,8 @@ def getValues(first):
     myMaze.addBlockData(walls)
     myMaze.assignNumber()
     return walls, dati
-def start():
-  first = True
+def start(first):
   walls, dati = getValues(first)
-  first = False
 
   right_distance = dati[4]
   left_distance = dati[5]
