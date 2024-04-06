@@ -1,5 +1,4 @@
 from BlockClass import Block
-from main import getValues
 from python.lettura_encoder import *
 
 MAX_Y = 500
