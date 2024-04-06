@@ -36,10 +36,10 @@ def getValues(first):
     myMaze.addBlockData(walls)
     myMaze.assignNumber()
     return walls, dati
-def start():
+def start(doGo):
   first = True
         
-  while True:
+  while doGo:
       walls, dati = getValues(first)
       first = False
 

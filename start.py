@@ -13,8 +13,8 @@ try:
     while True:
         if button.is_active and not run:
             print("Started")
-            start()
             run = True
+            start(run)
             while button.is_active:
                 time.sleep(0.1)
         if not button.is_active and run:
