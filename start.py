@@ -14,7 +14,7 @@ try:
         if button.is_active and not run:
             print("Started")
             run = True
-            start(run)
+            start()
             while button.is_active:
                 time.sleep(0.1)
         if not button.is_active and run:
