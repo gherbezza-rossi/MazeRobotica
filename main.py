@@ -32,7 +32,6 @@ def getValues(first):
     if first:
         walls[3] = 1
 
-    print("muri: ", walls)
     myMaze.addBlockData(walls)
     myMaze.assignNumber()
     return walls, dati
@@ -74,13 +73,8 @@ def start(first):
 
 
 
-  print("this is the general function that represents the algorithm that makes the robot move")
-
-  print("as first it checks if there is any empty \"rooms\" in the right or left of the robot")
-  print(right_distance, left_distance)
-  print(myMaze.orientation)
-  myMaze.theFirstFunctionDISTANCE(right_distance, left_distance)
-  print(myMaze.orientation)
-
-  print("it follows the right rule")
+  print("fn start")
+  print("distances[r, l]: ", right_distance, left_distance)
+  print("orientation: ", myMaze.orientation)
+  myMaze.emptyRoomsFinding(right_distance, left_distance)
   myMaze.RR()
