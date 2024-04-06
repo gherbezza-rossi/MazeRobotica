@@ -282,6 +282,10 @@ class Maze(object):
         else:
             return False
 
+    def vicoloCieco(self):
+            # TODO: turn and search for victims
+        print ("i do vicolo cieco stuff")
+
     def RR(self):
         print("fn RR")
         if self.notBlockedAndNotVisited("r"):
@@ -309,7 +313,7 @@ class Maze(object):
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goLeft()
         else:
-            print("back, walls")
-            # TODO: turn and search for victims
+            print("vicolo cieco, walls")
+            self.vicoloCieco()
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goBkw()
