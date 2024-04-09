@@ -190,7 +190,11 @@ class Maze(object):
             absolute_walls.append(walls[2])
             absolute_walls.append(walls[3])
             absolute_walls.append(walls[0])
-
+        else:
+            absolute_walls.append(walls[0])
+            absolute_walls.append(walls[1])
+            absolute_walls.append(walls[2])
+            absolute_walls.append(walls[3])
 
         self.mapMaze[self.currentX][self.currentY].walls = absolute_walls
         self.mapMaze[self.currentX][self.currentY].setAsVisited()
