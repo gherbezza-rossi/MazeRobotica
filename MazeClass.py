@@ -171,7 +171,7 @@ class Maze(object):
 
     def addBlockData(self, walls):
         print("add data")
-        print(self.orientation)
+        print("recived walls ", walls)
         absolute_walls = walls
 
         if self.orientation == 1:
