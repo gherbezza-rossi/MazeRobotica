@@ -4,6 +4,7 @@ import os
 from PIL import Image
 import numpy as np
 
+
 cam1 = cv2.VideoCapture(0)
 cam2 = cv2.VideoCapture(2)
 
@@ -27,7 +28,7 @@ def take_image_right():
 		print("written!")
           
 def read_image_letter_right():
-    bgr_img1 = cv2.imread("../opencv_frame_right.png")  # Load the image
+    bgr_img1 = cv2.imread("/home/sirio/Desktop/opencv_frame_right.png")  # Load the image
     img_rotate = cv2.rotate(bgr_img1, cv2.ROTATE_180)
     img_name1 = "/home/sirio/Desktop/opencv_frame_right.png"
     cv2.imwrite(img_name1, img_rotate)
@@ -39,6 +40,10 @@ def read_image_letter_right():
     cv2.imwrite("/home/sirio/Desktop/thresh_image_right.png", border_img1)
     txt1 = pytesseract.image_to_string(border_img1, config='--psm 6')
     print(txt1)
+    if 'U' in txt1:
+        return 'U'
+    elif 'S' in txt1:
+        return 'S'
 
 def find_square_shapes_right():
     img=cv2.imread("/home/sirio/Desktop/opencv_frame_right")
