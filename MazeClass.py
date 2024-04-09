@@ -175,10 +175,10 @@ class Maze(object):
         absolute_walls = walls
 
         if self.orientation == 1:
+            absolute_walls[0] = walls[3]
             absolute_walls[1] = walls[0]
             absolute_walls[2] = walls[1]
             absolute_walls[3] = walls[2]
-            absolute_walls[0] = walls[3]
 
         elif self.orientation == 2:
             absolute_walls[0] = walls[2]
