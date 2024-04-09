@@ -1,0 +1,10 @@
+Visual victims:
+    (H): two
+    (S): one
+    (U): zero rescue kit per victim.
+Coloured victims:
+    Red: two
+    Yellow: one rescue kit per victim
+    Green: zero rescue kits per victims
+
+each victim 5 seconds led blink

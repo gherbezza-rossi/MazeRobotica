@@ -10,3 +10,12 @@ def led_on():
     
 def led_off():
     GPIO.output(4,GPIO.LOW)
+
+
+def led_5():
+    for i in range(5):
+        GPIO.output(4,GPIO.HIGH)
+        time.sleep(0.5)
+        GPIO.output(4,GPIO.LOW)
+        time.sleep(0.5)
+        i+=1

@@ -44,22 +44,23 @@ def detect_range():
         ranges_2 = [sensor.range for sensor in vl53]
         time.sleep(0.1)
         ranges_3 = [sensor.range for sensor in vl53]
-
+        print(ranges_1)
         processed_ranges = []
 
         for index in range(len(vl53)):
             # Check if the three measurements are consistent
-            if 50 <= ranges_1[index] <= 5000 and \
-               50 <= ranges_2[index] <= 5000 and \
-               50 <= ranges_3[index] <= 5000 and \
+            if 35 <= ranges_1[index] <= 5000 and \
+               35 <= ranges_2[index] <= 5000 and \
+               35 <= ranges_3[index] <= 5000 and \
                abs(ranges_1[index] - ranges_2[index]) < 100 and \
                abs(ranges_1[index] - ranges_3[index]) < 100 and \
                abs(ranges_2[index] - ranges_3[index]) < 100:
                 processed_ranges.append("{}".format(ranges_1[index]))
             else:
-                processed_ranges.append("0")
+                processed_ranges.append("400")
 
         sensor_ranges_str = " ".join(processed_ranges)
+        
         return sensor_ranges_str
 
 def detect_walls():
@@ -74,9 +75,9 @@ def detect_walls():
 
         for index in range(len(vl53)):
             # Check if the three measurements are consistent and within range
-            if 20 <= ranges_1[index] <= 5000 and \
-            20 <= ranges_2[index] <= 5000 and \
-            20 <= ranges_3[index] <= 5000 and \
+            if 35 <= ranges_1[index] <= 5000 and \
+            35 <= ranges_2[index] <= 5000 and \
+            35 <= ranges_3[index] <= 5000 and \
             abs(ranges_1[index] - ranges_2[index]) < 100 and \
             abs(ranges_1[index] - ranges_3[index]) < 100 and \
             abs(ranges_2[index] - ranges_3[index]) < 100:
@@ -103,5 +104,3 @@ def detect_walls():
         
         sensor_ranges_str = " ".join(processed_ranges)
         return sensor_ranges_str
-
-detect_range()
