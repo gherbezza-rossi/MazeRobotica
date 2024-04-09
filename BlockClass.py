@@ -33,6 +33,7 @@ class Block:
     def setLeftWall(self, wall):
         self.walls[0] = wall
 
+
     # ------------------------------------------------front wall
     def hasFrontWall(self):
         return self.walls[1] == "1"
@@ -48,6 +49,14 @@ class Block:
         return self.walls[2] == "1"
     def setRightWall(self, wall):
         self.walls[2] = wall
+
+    # ------------------------------------------------back wall
+    def hasBackWall(self):
+        return self.walls[3] == "1"
+    def getBackWall(self):
+        return self.walls[3] == "1"
+    def setBackWall(self, wall):
+        self.walls[3] = wall
 
 # ----------------------------------------------------------------------------------------------------------------
 # ----------------------------------------------------------------------------------------------------------------distance

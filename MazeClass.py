@@ -13,7 +13,45 @@ class Maze(object):
         # 1 (90 to the right) => lA=bC, fA= lC, rA=fC, bA=rC
         # 2 (180) => lA=rC, fA=bC, rA=lC, bA=fC
         # 3 (270 to the right) => lA=fC, fA=rC, rA=bC, bA=lC
+    def hasCurrentRightWall(self):
+        if self.orientation == 0:
+            return self.mapMaze[self.currentX][self.currentY].hasRightWall()
+        elif self.orientation == 1:
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+        elif self.orientation == 2:
+            return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
+        elif self.orientation == 3:
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
 
+    def hasCurrentFrontWall(self):
+        if self.orientation == 0:
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+        elif self.orientation == 1:
+            return self.mapMaze[self.currentX][self.currentY].hasRightWall()
+        elif self.orientation == 2:
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
+        elif self.orientation == 3:
+            return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
+
+    def hasCurrentLeftWall(self):
+        if self.orientation == 0:
+            return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
+        elif self.orientation == 1:
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
+        elif self.orientation == 2:
+            return self.mapMaze[self.currentX][self.currentY].hasRightWall()
+        elif self.orientation == 3:
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+
+    def hasCurrentBackWall(self):
+        if self.orientation == 0:
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
+        elif self.orientation == 1:
+            return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
+        elif self.orientation == 2:
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+        elif self.orientation == 3:
+            return self.mapMaze[self.currentX][self.currentY].hasRightWall()
 
 
     def getRightBlock(self):
@@ -265,27 +303,27 @@ class Maze(object):
         if direction == "r":
             if self.getRightBlock() is None:
                 return False
-            return not self.mapMaze[self.currentX][self.currentY].hasRightWall() and not self.getRightBlock().isVisited()
+            return not self.hasCurrentRightWall() and not self.getRightBlock().isVisited()
         elif direction == "f":
             if self.getFwdBlock() is None:
                 return False
-            return not self.mapMaze[self.currentX][self.currentY].hasFrontWall() and not self.getFwdBlock().isVisited()
+            return not self.hasCurrentFrontWall() and not self.getFwdBlock().isVisited()
         elif direction == "l":
             if self.getLeftBlock() is None:
                 return False
-            return not self.mapMaze[self.currentX][self.currentY].hasLeftWall() and not self.getLeftBlock().isVisited()
+            return not self.hasCurrentLeftWall() and not self.getLeftBlock().isVisited()
         else:
             return True
     
     def blocked(self, direction):
         if direction == "r":
-            return self.mapMaze[self.currentX][self.currentY].hasRightWall()
+            return self.hasCurrentRightWall()
         elif direction == "f":
-            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+            return self.hasCurrentFrontWall()
         elif direction == "l":
-            return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
+            return self.hasCurrentLeftWall()
         else:
-            return False
+            return self.hasCurrentBackWall()
 
     def vicoloCieco(self):
             # TODO: turn and search for victims
