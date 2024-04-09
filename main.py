@@ -1,4 +1,6 @@
 from MazeClass import Maze
+from python.servo import *
+from python.led_control import *
 
 myMaze = Maze()
 
@@ -11,14 +13,42 @@ if user_input.lower() in ["yes", "no"]:
         print("settaggio sensore colori")
        # from python.color_sensor import *
         print("settaggio telecamere")
-       # from python.telecamere import *
+        from python.telecamere import *
         from python.led_control import *
+        GPIO.setmode(GPIO.BCM)
+        GPIO.setup(pwm1_gpio, GPIO.OUT)
+        GPIO.setup(pwm2_gpio, GPIO.OUT)
+        pwm1 = GPIO.PWM(pwm1_gpio, frequence)
+        pwm2 = GPIO.PWM(pwm2_gpio, frequence)
+        pwm1.start(angle_to_percent(135))
+        pwm2.start(angle_to_percent(135))
 
 
 
 
 else:
     print("Exiting...")
+
+
+
+
+
+
+
+
+def send_medikit_right(): 
+    pwm1.ChangeDutyCycle(angle_to_percent(180))
+    time.sleep(1)
+    pwm1.ChangeDutyCycle(angle_to_percent(135))
+    time.sleep(0.5)
+    GPIO.output(pwm1_gpio, GPIO.LOW)
+
+def send_medikit_left(): 
+    pwm2.ChangeDutyCycle(angle_to_percent(180))
+    time.sleep(1)
+    pwm2.ChangeDutyCycle(angle_to_percent(135))
+    time.sleep(0.5)
+    GPIO.output(pwm2_gpio, GPIO.LOW)
 
 def getValues(first):
     dati_tof = detect_walls()
@@ -34,7 +64,13 @@ def getValues(first):
 
     myMaze.addBlockData(walls)
     myMaze.assignNumber()
+
+    #take_image_right()
+    #lettera_right=read_image_letter_right()
+    #colore_right=find_square_shapes_right()
     return walls, dati
+
+
 def start(first):
   walls, dati = getValues(first)
 

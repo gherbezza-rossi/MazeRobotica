@@ -22,4 +22,6 @@ def angle_to_percent(angle):
 
 
 pwm1_gpio = 13
+pwm2_gpio = 14
 frequence = 50
+
