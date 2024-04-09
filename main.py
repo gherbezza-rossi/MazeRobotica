@@ -1,40 +1,30 @@
 from MazeClass import Maze
 from python.servo import *
 from python.led_control import *
+from python.tof import *
+from python.telecamere import *
+from python.led_control import *
+# from python.color_sensor import *
 
 myMaze = Maze()
 
-user_input = input("hai rimosso il cavo del sensore colori? (yes/no): ")
-if user_input.lower() in ["yes", "no"]:
-    print("settaggio tof")
-    from python.tof import *
-    user_input = input("hai ricollegato il sensore? (yes/no): ")
+def initFunction():
+    user_input = input("hai rimosso il cavo del sensore colori? (yes/no): ")
     if user_input.lower() in ["yes", "no"]:
-        print("settaggio sensore colori")
-       # from python.color_sensor import *
-        print("settaggio telecamere")
-        from python.telecamere import *
-        from python.led_control import *
-        GPIO.setmode(GPIO.BCM)
-        GPIO.setup(pwm1_gpio, GPIO.OUT)
-        GPIO.setup(pwm2_gpio, GPIO.OUT)
-        pwm1 = GPIO.PWM(pwm1_gpio, frequence)
-        pwm2 = GPIO.PWM(pwm2_gpio, frequence)
-        pwm1.start(angle_to_percent(135))
-        pwm2.start(angle_to_percent(135))
-
-
-
-
-else:
-    print("Exiting...")
-
-
-
-
-
-
-
+        print("settaggio tof")
+        user_input = input("hai ricollegato il sensore? (yes/no): ")
+        if user_input.lower() in ["yes", "no"]:
+            print("settaggio sensore colori")
+            print("settaggio telecamere")
+            GPIO.setmode(GPIO.BCM)
+            GPIO.setup(pwm1_gpio, GPIO.OUT)
+            GPIO.setup(pwm2_gpio, GPIO.OUT)
+            pwm1 = GPIO.PWM(pwm1_gpio, frequence)
+            pwm2 = GPIO.PWM(pwm2_gpio, frequence)
+            pwm1.start(angle_to_percent(135))
+            pwm2.start(angle_to_percent(135))
+    else:
+       print("Exiting...")
 
 def send_medikit_right(): 
     pwm1.ChangeDutyCycle(angle_to_percent(180))
@@ -72,10 +62,10 @@ def getValues(first):
 
 
 def start(first):
-  walls, dati = getValues(first)
+    walls, dati = getValues(first)
 
-  right_distance = dati[4]
-  left_distance = dati[5]
+    right_distance = dati[4]
+    left_distance = dati[5]
   # ----------------------------  altre cose che deve fare robot ---------------------------------
 
  # dati_camera1 = take_image_right()
@@ -105,12 +95,11 @@ def start(first):
 #          mao=mao+0.5
 
   #-------------------------------------------------------------------------------------------------
+    print("fn start")
+    print("distances[r, l]: ", right_distance, left_distance)
+    print("orientation: ", myMaze.orientation)
+    myMaze.emptyRoomsFinding(right_distance, left_distance)
+    myMaze.RR()
 
 
-
-
-  print("fn start")
-  print("distances[r, l]: ", right_distance, left_distance)
-  print("orientation: ", myMaze.orientation)
-  myMaze.emptyRoomsFinding(right_distance, left_distance)
-  myMaze.RR()
+initFunction()
