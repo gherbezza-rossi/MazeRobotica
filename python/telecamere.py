@@ -44,9 +44,11 @@ def read_image_letter_right():
         return 'U'
     elif 'S' in txt1:
         return 'S'
+    elif 'H' in txt1:
+        return 'H'
 
 def find_square_shapes_right():
-    img=cv2.imread("/home/sirio/Desktop/opencv_frame_right")
+    img=cv2.imread("/home/sirio/Desktop/opencv_frame_right.png")
     hsv=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
     lower=np.array([0, 133, 98]) #0,133,98
     upper=np.array([179, 255, 255]) #179,255,255
@@ -127,4 +129,5 @@ def find_square_shapes_left():
 def close_camera_right():
 	cam2.release()
 	cv2.destroyAllWindows()
+     
 
