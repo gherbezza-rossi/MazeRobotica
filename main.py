@@ -26,7 +26,7 @@ def getValues(first):
     dati = dati_tof.split()
     left = dati[0]
     front = dati[1]
-    right = dati[3]
+    right = dati[2]
 
     walls = [left, front, right, 0]  # walls = [left, front, right, back]
     if first:
