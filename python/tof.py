@@ -90,16 +90,18 @@ def detect_walls():
                 processed_ranges.append("0")
 
         
-        if ranges_1[0] > 450:
+        if ranges_1[0] > 200:
             processed_ranges.append("1")
         else:
             processed_ranges.append("0")
         
         # Check if the distance measured by the last sensor is greater than 500
-        if ranges_3[-1] > 450:
+        if ranges_3[-1] > 200:
             processed_ranges.append("1")
         else:
             processed_ranges.append("0")
         
         sensor_ranges_str = " ".join(processed_ranges)
         return sensor_ranges_str
+
+detect_range()

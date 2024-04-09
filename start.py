@@ -19,6 +19,7 @@ try:
             first_run = False
             while button.is_active:
                 time.sleep(0.1)
+                start(first_run)
         if not button.is_active and run:
             print("Stopped")
             run = False

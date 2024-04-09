@@ -54,6 +54,7 @@ def getValues(first):
     dati_tof = detect_walls()
     print(dati_tof)
     dati = dati_tof.split()
+    print(dati)
     left = dati[0]
     front = dati[1]
     right = dati[3]

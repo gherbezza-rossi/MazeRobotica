@@ -61,20 +61,14 @@ void loop() {
   if(prev_command=="w"){
     float currentAngle = event.orientation.x;
     float yangle = event.orientation.y;
-    Serial.print(yangle);
-    if(yangle>2 || yangle<-2){
-      cacca=cacca+1;
-      Serial.print("inclinato");
+    //Serial.print(yangle);
+    if(cacca==0 &&(yangle>2 || yangle<-2)){
+      cacca=1;
+      Serial.println("inclinato");
     }
-    Serial.print(" cacca");
-    Serial.print(cacca);
-    if(cacca>500 && (yangle<2 && yangle>-2)){
-      Serial.println("non più inclinato");
-      delay(700);
+    if(cacca==1 &&(yangle<2 && yangle>-2)){
       cacca=0;
       Serial.println("completata salita");
-      stop();
-      prev_command="q";
     }else{
       if(currentAngle>270){
         if(angle==0){
@@ -151,10 +145,10 @@ void loop() {
           analogWrite(MA_PWM2, 100);
           analogWrite(MA_PWM1, 90);
         }    
-    Serial.print("Angle: ");
+ /*   Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
-    Serial.println(currentAngle);
+    Serial.println(currentAngle);*/
     }
   }
   else if(prev_command=="s")
@@ -235,10 +229,10 @@ void loop() {
         analogWrite(MA_PWM1, 100);
         analogWrite(MA_PWM2, 90);
       }
-    Serial.print("Angle: ");
+   /* Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
-    Serial.println(currentAngle);
+    Serial.println(currentAngle); */
       
   }else if(prev_command=="a" || prev_command=="d" || prev_command=="r")
   {
@@ -254,12 +248,12 @@ void loop() {
     }
     float angledifference = angle - currentAngle;
 
-    Serial.print("Angle: ");
+ /*   Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
     Serial.print(currentAngle);
     Serial.print("   Difference: ");
-    Serial.println(angledifference);
+    Serial.println(angledifference); */
 
     if (angledifference < -10 || angledifference > 10) {
         analogWrite(MD_PWM1, 100);
@@ -287,20 +281,15 @@ void loop() {
   if (Serial.available() > 0) {
     String data = Serial.readStringUntil('\n');
     float yangle = event.orientation.y;
-    if (data.length() > 0) { // Check if there is any valid data
-      if(cacca==true && data[0]=='w'){
-        Serial.println("mao");
-      }else{
+    if (data.length() > 0) {
         switch (data[0]) {
         case 'w':
           avanti();
           prev_command="w";
           break;
         case 'q':
-          if(cacca==0){
-            stop();
-            prev_command="q";
-          }
+          stop();
+          prev_command="q";
           break;
         case 's':
           indietro();
@@ -343,7 +332,6 @@ void loop() {
         default:
           // Handle unknown command or do nothing
           break;
-        }
       }
       
     }
@@ -385,6 +373,7 @@ void destra(){
     digitalWrite(MA_BIN2,LOW);
 
 }
+
 void sinistra(){
     digitalWrite(MD_AIN1,HIGH);
     digitalWrite(MD_AIN2,LOW);

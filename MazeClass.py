@@ -1,5 +1,6 @@
 from BlockClass import Block
 from python.lettura_encoder import *
+from main import *
 
 MAX_Y = 500
 MAX_X = 500
@@ -104,9 +105,9 @@ class Maze(object):
 
         print("Going fwd")
         send_serial("w")
-        time.sleep(3)
+        time.sleep(2)
         send_serial("r")
-        time.sleep(3)
+        time.sleep(1)
         print("I have gone fwd")
 
     def goBkw(self):
@@ -124,9 +125,9 @@ class Maze(object):
 
         print("going back")
         send_serial("s")
-        time.sleep(3)
+        time.sleep(2)
         send_serial("r")
-        time.sleep(3)
+        time.sleep(1)
         print("gone bwd")
 
     def goLeft(self):
@@ -170,6 +171,7 @@ class Maze(object):
 
     def addBlockData(self, walls):
         print("add data")
+        print(self.orientation)
         absolute_walls = walls
 
         if self.orientation == 1:

@@ -64,13 +64,29 @@ def send_serial(a):
                 counter_A += outcome[position]
                 last_AA = current_aa
                 if(counter_A<-3200): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
-                    q=str("q")
-                    ser.write(q.encode('utf-8'))
-                    time.sleep(1)
-                    counter_A=0
-                    last_AA=0
-                    miao="finito"
-                    break
+                    line = ser.readline().decode("utf-8")
+                    print(line)
+                    if line.strip() == "inclinato":
+                        while True:
+                            line = ser.readline().decode("utf-8")
+                            if line.strip() == "completata salita":
+                                time.sleep(0.5)
+                                break
+                        q=str("q")
+                        ser.write(q.encode('utf-8'))
+                        time.sleep(1)
+                        counter_A=0
+                        last_AA=0
+                        miao="finito"
+                        break
+                    else:
+                        q=str("q")
+                        ser.write(q.encode('utf-8'))
+                        time.sleep(1)
+                        counter_A=0
+                        last_AA=0
+                        miao="finito"
+                        break
         
                 # stop loop in time = period
                 if time.time() > start + period : break
@@ -115,13 +131,4 @@ def send_serial(a):
             line = ser.readline().decode("utf-8")
             if line.strip() == "Complete":
                 break
-       
-
-    
-    
-    
-    
-    
-
-
-        
+              
