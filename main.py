@@ -5,6 +5,14 @@ from python.tof import *
 from python.telecamere import *
 from python.led_control import *
 # from python.color_sensor import *
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pwm1_gpio, GPIO.OUT)
+GPIO.setup(pwm2_gpio, GPIO.OUT)
+pwm1 = GPIO.PWM(pwm1_gpio, frequence)
+pwm2 = GPIO.PWM(pwm2_gpio, frequence)
+pwm1.start(angle_to_percent(135))
+pwm2.start(angle_to_percent(135))
+
 
 myMaze = Maze()
 
@@ -16,13 +24,7 @@ def initFunction():
         if user_input.lower() in ["yes", "no"]:
             print("settaggio sensore colori")
             print("settaggio telecamere")
-            GPIO.setmode(GPIO.BCM)
-            GPIO.setup(pwm1_gpio, GPIO.OUT)
-            GPIO.setup(pwm2_gpio, GPIO.OUT)
-            pwm1 = GPIO.PWM(pwm1_gpio, frequence)
-            pwm2 = GPIO.PWM(pwm2_gpio, frequence)
-            pwm1.start(angle_to_percent(135))
-            pwm2.start(angle_to_percent(135))
+            
     else:
        print("Exiting...")
 

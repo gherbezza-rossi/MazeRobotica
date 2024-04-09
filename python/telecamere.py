@@ -128,5 +128,3 @@ def close_camera_right():
 	cam2.release()
 	cv2.destroyAllWindows()
 
-take_image_left()
-read_image_letter_left()
