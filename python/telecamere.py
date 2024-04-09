@@ -40,11 +40,11 @@ def read_image_letter_right():
     cv2.imwrite("/home/sirio/Desktop/thresh_image_right.png", border_img1)
     txt1 = pytesseract.image_to_string(border_img1, config='--psm 6')
     print(txt1)
-    if 'U' in txt1:
+    if 'U'==txt1:
         return 'U'
-    elif 'S' in txt1:
+    elif 'S'==txt1:
         return 'S'
-    elif 'H' in txt1:
+    elif 'H'==txt1:
         return 'H'
 
 def find_square_shapes_right():
@@ -90,19 +90,23 @@ def take_image_left():
 def read_image_letter_left():
     bgr_img2 = cv2.imread("/home/sirio/Desktop/opencv_frame_left.png")  # Load the image
     gry_img2 = cv2.cvtColor(bgr_img2, cv2.COLOR_BGR2GRAY)
-    gry_img2 = cv2.bilateralFilter(gry_img2, 11, 17, 17)
-    thresh2 = cv2.adaptiveThreshold(gry_img2, 255,
-    cv2.ADAPTIVE_THRESH_GAUSSIAN_C, cv2.THRESH_BINARY_INV, 11, 2)
+    ret,thresh2 = cv2.threshold(gry_img2,100,255,cv2.THRESH_BINARY)
     #border_img2 = cv2.copyMakeBorder(thresh2, 50, 50, 50, 50, cv2.BORDER_CONSTANT, value=255)
     cv2.imwrite("/home/sirio/Desktop/thresh_image_left.png", thresh2)
     txt2 = pytesseract.image_to_string(thresh2, config='--psm 6')
     print(txt2) 
+    if 'U'==txt2:
+        return 'U'
+    elif 'S'==txt2:
+        return 'S'
+    elif 'H'==txt2:
+        return 'H'
 
 
 def find_square_shapes_left():
     img=cv2.imread("/home/sirio/Desktop/opencv_frame_left.png")
     hsv=cv2.cvtColor(img, cv2.COLOR_BGR2HSV)
-    lower=np.array([0, 133, 98]) #0,133,98
+    lower=np.array([0, 145, 60]) #0,133,98
     upper=np.array([179, 255, 255]) #179,255,255
     mask=cv2.inRange(hsv, lower, upper)
     cnts,hei=cv2.findContours(mask, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE)
@@ -115,7 +119,7 @@ def find_square_shapes_left():
             roi = hsv[y:y+h, x:x+w]
             # Calcolare la media dei valori di colore nella regione di interesse
             avg_hue = np.mean(roi[:,:,0])
-            if avg_hue >= 20 and avg_hue <= 40: # Giallo
+            if avg_hue >= 20 and avg_hue <= 80: # Giallo
                 color = "Giallo"
             elif avg_hue >= 40 and avg_hue <= 80: # Verde
                 color = "Verde"
@@ -123,11 +127,12 @@ def find_square_shapes_left():
                 color = "Rosso"
             else:
                 color = "Altro"
+            print(avg_hue)
             print("Colore:", color)
+    cv2.imwrite("/home/sirio/Desktop/mask_image_left.png", img)
 
 
 def close_camera_right():
 	cam2.release()
 	cv2.destroyAllWindows()
      
-
