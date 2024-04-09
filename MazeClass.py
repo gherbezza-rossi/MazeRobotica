@@ -1,6 +1,5 @@
 from BlockClass import Block
 from python.lettura_encoder import *
-from main import *
 
 MAX_Y = 500
 MAX_X = 500
@@ -105,9 +104,9 @@ class Maze(object):
 
         print("Going fwd")
         send_serial("w")
-        time.sleep(2)
+        time.sleep(3)
         send_serial("r")
-        time.sleep(1)
+        time.sleep(3)
         print("I have gone fwd")
 
     def goBkw(self):
@@ -125,9 +124,9 @@ class Maze(object):
 
         print("going back")
         send_serial("s")
-        time.sleep(2)
+        time.sleep(3)
         send_serial("r")
-        time.sleep(1)
+        time.sleep(3)
         print("gone bwd")
 
     def goLeft(self):
@@ -172,25 +171,25 @@ class Maze(object):
     def addBlockData(self, walls):
         print("add data")
         print("recived walls ", walls)
-        absolute_walls = walls
+        absolute_walls = []
 
         if self.orientation == 1:
-            absolute_walls[0] = walls[3]
-            absolute_walls[1] = walls[0]
-            absolute_walls[2] = walls[1]
-            absolute_walls[3] = walls[2]
+            absolute_walls.append(walls[3])
+            absolute_walls.append(walls[0])
+            absolute_walls.append(walls[1])
+            absolute_walls.append(walls[2])
 
         elif self.orientation == 2:
-            absolute_walls[0] = walls[2]
-            absolute_walls[1] = walls[3]
-            absolute_walls[2] = walls[0]
-            absolute_walls[3] = walls[1]
+            absolute_walls.append(walls[2])
+            absolute_walls.append(walls[3])
+            absolute_walls.append(walls[0])
+            absolute_walls.append(walls[1])
 
         elif self.orientation == 3:
-            absolute_walls[0] = walls[1]
-            absolute_walls[1] = walls[2]
-            absolute_walls[2] = walls[3]
-            absolute_walls[3] = walls[0]
+            absolute_walls.append(walls[1])
+            absolute_walls.append(walls[2])
+            absolute_walls.append(walls[3])
+            absolute_walls.append(walls[0])
 
 
         self.mapMaze[self.currentX][self.currentY].walls = absolute_walls
