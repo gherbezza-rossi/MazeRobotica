@@ -11,8 +11,20 @@ if user_input.lower() in ["yes", "no"]:
         print("settaggio sensore colori")
         print("settaggio telecamere")
         from python.telecamere import *
+        from python.color_sensor import *
+        user_input = input("calibrazione sensore colori, nero (start/no)")
+        if user_input.lower() in ["start", "no"]:
+            nero = sensor.lux
+            user_input = input("calibrazione sensore colori, blu (start/no)")
+            if user_input.lower() in ["start", "no"]:
+                blu = sensor.lux
+                user_input = input("calibrazione sensore colori, specchio (start/no)")
+                if user_input.lower() in ["start", "no"]:
+                    specchio = sensor.lux
+                    user_input = input("calibrazione sensore colori, bianco (start/no)")
+                    if user_input.lower() in ["start", "no"]:
+                        bianco = sensor.lux
 
-        # from python.color_sensor import *
 else:
     print("Exiting...")
 
