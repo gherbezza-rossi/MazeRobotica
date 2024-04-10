@@ -401,7 +401,6 @@ class Maze(object):
     
     def getValues(self, first):
         dati_tof = detect_walls()
-        print(dati_tof)
         dati = dati_tof.split()
         print(dati)
         left = dati[0]

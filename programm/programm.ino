@@ -86,34 +86,34 @@ void loop() {
           analogWrite(MA_PWM2, 200);
         }else if(currentAngle>angle+3){
           analogWrite(MD_PWM2, 200);
+          analogWrite(MD_PWM1, 100);
+          analogWrite(MA_PWM2, 200);
+          analogWrite(MA_PWM1, 100);
+        }else if(currentAngle<angle-3){
+          analogWrite(MD_PWM2, 100);
+          analogWrite(MD_PWM1, 200);
+          analogWrite(MA_PWM2, 100);
+          analogWrite(MA_PWM1, 200);
+        }else if(currentAngle>angle+1){
+          analogWrite(MD_PWM2, 200);
           analogWrite(MD_PWM1, 130);
           analogWrite(MA_PWM2, 200);
           analogWrite(MA_PWM1, 130);
-        }else if(currentAngle<angle-3){
+        }else if(currentAngle<angle-1){
           analogWrite(MD_PWM2, 130);
           analogWrite(MD_PWM1, 200);
           analogWrite(MA_PWM2, 130);
           analogWrite(MA_PWM1, 200);
-        }else if(currentAngle>angle+1){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 150);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 150);
-        }else if(currentAngle<angle-1){
+        }else if(currentAngle>angle+0.5){
           analogWrite(MD_PWM2, 150);
           analogWrite(MD_PWM1, 200);
           analogWrite(MA_PWM2, 150);
           analogWrite(MA_PWM1, 200);
-        }else if(currentAngle>angle+0.5){
-          analogWrite(MD_PWM2, 160);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 160);
-          analogWrite(MA_PWM1, 200);
         }else if(currentAngle<angle-0.5){
           analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 160);
+          analogWrite(MD_PWM1, 150);
           analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 160);
+          analogWrite(MA_PWM1, 150);
         }else if(currentAngle>angle+0.3){
           analogWrite(MD_PWM2, 170);
           analogWrite(MD_PWM1, 200);
@@ -164,70 +164,70 @@ void loop() {
       }
     }
       if(currentAngle<angle+0.3 && currentAngle>angle-0.3){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle>angle+3){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 30);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 30);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 100);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 100);
       }else if(currentAngle<angle-3){
         analogWrite(MD_PWM1, 30);
         analogWrite(MD_PWM2, 100);
         analogWrite(MA_PWM1, 30);
         analogWrite(MA_PWM2, 100);
       }else if(currentAngle>angle+1){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 50);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 50);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 130);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 130);
       }else if(currentAngle<angle-1){
-        analogWrite(MD_PWM1, 50);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 50);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 130);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 130);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle>angle+0.5){
-        analogWrite(MD_PWM1, 60);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 60);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 150);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 150);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle<angle-0.5){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 60);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 60);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 150);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 150);
       }else if(currentAngle>angle+0.3){
-        analogWrite(MD_PWM1, 70);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 70);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 170);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 170);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle<angle-0.3){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 70);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 70);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 170);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 170);
       }else if(currentAngle>angle+0.2){
-        analogWrite(MD_PWM1, 80);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 80);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 180);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 180);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle<angle-0.2){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 80);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 80);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 180);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 180);
       }else if(currentAngle>angle+0.1){
-        analogWrite(MD_PWM1, 90);
-        analogWrite(MD_PWM2, 100);
-        analogWrite(MA_PWM1, 90);
-        analogWrite(MA_PWM2, 100);
+        analogWrite(MD_PWM1, 190);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 190);
+        analogWrite(MA_PWM2, 200);
       }else if(currentAngle<angle-0.1){
-        analogWrite(MD_PWM1, 100);
-        analogWrite(MD_PWM2, 90);
-        analogWrite(MA_PWM1, 100);
-        analogWrite(MA_PWM2, 90);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 190);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 190);
       }
    /* Serial.print("Angle: ");
     Serial.print(angle);
