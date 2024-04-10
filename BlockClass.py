@@ -12,9 +12,9 @@ class Block:
 
 
     def isVisited(self):
-        return self.visited
+        return self.visited == 1
     def setAsVisited(self):
-        self.visited = True
+        self.visited = 1
     def getData(self):
         return self.data
     def setData(self, data):

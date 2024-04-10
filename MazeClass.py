@@ -42,8 +42,8 @@ MAX_VALUE = 1000000
 
 class Maze(object):
     mapMaze = [[Block() for _ in range(MAX_X)] for _ in range(MAX_Y)]
-    currentX = 250
-    currentY = 499
+    currentX = MAX_X
+    currentY = MAX_Y - 1
     orientation = 0
         # 0 => lC=lA, fC=fA, rC=rA, bC=bA
         # 1 (90 to the right) => lA=bC, fA= lC, rA=fC, bA=rC
@@ -164,8 +164,6 @@ class Maze(object):
         print("orientation after turning right: " + str(self.orientation))
 
     def goFwd(self):
-        self.mapMaze[self.currentX][self.currentY].visited = 1
-
         if self.orientation == 0:
             self.currentY -= 1
 
@@ -179,7 +177,24 @@ class Maze(object):
             self.currentX -= 1
 
         print("Going fwd")
-        send_serial("w")
+
+        if send_serial("w"): # if found black
+            if self.orientation == 0:
+                self.currentY += 1
+
+            elif self.orientation == 1:
+                self.currentX -= 1
+
+            elif self.orientation == 2:
+                self.currentY -= 1
+
+            elif self.orientation == 3:
+                self.currentX += 1
+
+            self.mapMaze[self.currentX][self.currentY].walls[1] = 1
+
+            # todo go back a bit
+
         time.sleep(1.5)
         send_serial("r")
         time.sleep(1.5)
@@ -224,28 +239,14 @@ class Maze(object):
         self.goFwd()
         print("gone right")
 
-    def isVisitedAllAround(self): #
-        right = self.getRightBlock()
-        if right is None:
-            right = True
-        else:
-            right = right.isVisited()
+    def isAllVisited(self):
+        print("checking all visited")
 
-        left = self.getLeftBlock()
-        if left is None:
-            left = True
-        else:
-            left = left.isVisited()
-
-        fwd = self.getFwdBlock()
-        if fwd is None:
-            fwd = True
-        else:
-            fwd = fwd.isVisited()
-
-        print("all visited: ", (right and left and fwd))
-
-        return right and left and fwd
+        for x in range(MAX_X):
+            for y in range(MAX_Y):
+                if self.mapMaze[x][y].visited == 2:
+                    return False
+        return True
 
     def addBlockData(self, walls):
         print("add data")
@@ -276,6 +277,49 @@ class Maze(object):
             absolute_walls.append(walls[3])
 
         self.mapMaze[self.currentX][self.currentY].walls = absolute_walls
+
+        if not self.hasCurrentLeftWall():
+            if self.orientation == 0 and self.currentX - 1 >= 0:
+                self.mapMaze[self.currentX - 1][self.currentY].visited = 2
+            elif self.orientation == 1 and self.currentY - 1 >= 0:
+                self.mapMaze[self.currentX][self.currentY - 1].visited = 2
+            elif self.orientation == 2 and self.currentX + 1 < MAX_X:
+                self.mapMaze[self.currentX + 1][self.currentY].visited = 2
+            elif self.orientation == 3 and self.currentY + 1 < MAX_Y:
+                self.mapMaze[self.currentX][self.currentY + 1].visited = 2
+
+        if not self.hasCurrentFrontWall():
+            if self.orientation == 0 and self.currentY - 1 >= 0:
+                self.mapMaze[self.currentX][self.currentY - 1].visited = 2
+            elif self.orientation == 1 and self.currentX + 1 < MAX_X:
+                self.mapMaze[self.currentX + 1][self.currentY].visited = 2
+            elif self.orientation == 2 and self.currentY + 1 < MAX_Y:
+                self.mapMaze[self.currentX][self.currentY + 1].visited = 2
+            elif self.orientation == 3 and self.currentX - 1 >= 0:
+                self.mapMaze[self.currentX - 1][self.currentY].visited = 2
+
+        if not self.hasCurrentRightWall():
+            if self.orientation == 0 and self.currentX + 1 < MAX_X:
+                self.mapMaze[self.currentX + 1][self.currentY].visited = 2
+            elif self.orientation == 1 and self.currentY + 1 > MAX_Y:
+                self.mapMaze[self.currentX][self.currentY + 1].visited = 2
+            elif self.orientation == 2 and self.currentX - 1 >= 0:
+                self.mapMaze[self.currentX - 1][self.currentY].visited = 2
+            elif self.orientation == 3 and self.currentY - 1 >= 0:
+                self.mapMaze[self.currentX][self.currentY - 1].visited = 2
+
+        if not self.hasCurrentBackWall():
+            if self.orientation == 0 and self.currentY + 1 < MAX_Y:
+                self.mapMaze[self.currentX][self.currentY + 1].visited = 2
+            elif self.orientation == 1 and self.currentX - 1 >= 0:
+                self.mapMaze[self.currentX - 1][self.currentY].visited = 2
+            elif self.orientation == 2 and self.currentY - 1 >= 0:
+                self.mapMaze[self.currentX][self.currentY - 1].visited = 2
+            elif self.orientation == 3 and self.currentX + 1 < MAX_X:
+                self.mapMaze[self.currentX + 1][self.currentY].visited = 2
+
+
+
         print("absolute walls: ", self.mapMaze[self.currentX][self.currentY].walls, "\trecorded walls: ", walls)
 
     def assignNumber(self):
@@ -332,7 +376,6 @@ class Maze(object):
             print("i am going into an empty room")
             self.goFwd()
             self.getValues(False)
-            # TODO: read block data
 
         while not self.mapMaze[self.currentX][self.currentY].respectedRR:
             print("i am coming back from an empty room")
@@ -410,11 +453,13 @@ class Maze(object):
             self.mapMaze[self.currentX][self.currentY].respectedRR = 1
             self.goBkw()
 
-    
+
     def getValues(self, first):
+
         dati_tof = detect_walls()
         dati = dati_tof.split()
-        print(dati)
+        print("tof ", dati)
+
         left = dati[0]
         front = dati[1]
         right = dati[3]
@@ -427,10 +472,11 @@ class Maze(object):
         self.assignNumber()
 
         take_image_right()
-        #take_image_left()
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
         colore_right=find_square_shapes_right()
+
+        #take_image_left()
         #lettera_left=read_image_letter_left()
         #analyse_victim_left(lettera_left)
         #colore_left=find_square_shapes_left()

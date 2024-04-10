@@ -5,18 +5,27 @@ import signal
 from gpiozero import Button
 from MazeClass import *
 
+def goToStart():
+    print("Going to start")
+    # todo going to start
+
 
 def move(first):
     print("first visited")
     walls, dati = myMaze.getValues(first)
     right_distance = dati[4]
     left_distance = dati[5]
-    print("distances[r, l]: ", right_distance, left_distance)
+    if myMaze.isAllVisited():
+        print("is all visited")
+        goToStart()
 
-    print("fn start")
-    print("orientation: ", myMaze.orientation)
-    myMaze.emptyRoomsFinding(right_distance, left_distance)
-    myMaze.RR()
+    else:
+        print("distances[r, l]: ", right_distance, left_distance)
+
+        print("fn start")
+        print("orientation: ", myMaze.orientation)
+        myMaze.emptyRoomsFinding(right_distance, left_distance)
+        myMaze.RR()
 
 myMaze = Maze()
 
