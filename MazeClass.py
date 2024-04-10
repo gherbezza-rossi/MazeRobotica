@@ -41,11 +41,11 @@ class Maze(object):
         if self.orientation == 0:
             return self.mapMaze[self.currentX][self.currentY].hasRightWall()
         elif self.orientation == 1:
-            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
         elif self.orientation == 2:
             return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
         elif self.orientation == 3:
-            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
 
     def hasCurrentFrontWall(self):
         if self.orientation == 0:
@@ -416,13 +416,13 @@ class Maze(object):
         self.assignNumber()
 
         take_image_right()
-        take_image_left()
+        #take_image_left()
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
         colore_right=find_square_shapes_right()
-        lettera_left=read_image_letter_left()
-        analyse_victim_left(lettera_left)
-        colore_left=find_square_shapes_left()
+        #lettera_left=read_image_letter_left()
+        #analyse_victim_left(lettera_left)
+        #colore_left=find_square_shapes_left()
 
 
         self.mapMaze[self.currentX][self.currentY].setAsVisited()
