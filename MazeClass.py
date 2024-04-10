@@ -351,14 +351,17 @@ class Maze(object):
     def vicoloCieco(self):
         print ("i do vicolo cieco stuff")
 
-        self.turnLeft()
+
+        send_serial("a")
+        time.sleep(3)
 
 
         take_image_right()
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
 
-        self.turnRight()
+        send_serial("d")
+        time.sleep(3)
 
 
     def RR(self):
