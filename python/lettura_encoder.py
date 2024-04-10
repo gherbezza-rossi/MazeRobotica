@@ -63,7 +63,7 @@ def send_serial(a):
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                if(counter_A<-3360): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                if(counter_A<-2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     line = ser.readline().decode("utf-8")
                     print(line)
                     if line.strip() == "inclinato":
@@ -109,7 +109,7 @@ def send_serial(a):
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                if(counter_A>3360): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                if(counter_A>2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     q=str("q")
                     ser.write(q.encode('utf-8'))
                     time.sleep(1)
