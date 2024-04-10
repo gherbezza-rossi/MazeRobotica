@@ -142,11 +142,13 @@ class Maze(object):
     def turnRight(self):
         self.orientation += 1
         self.orientation %= 4
+        send_serial("d")
         print("orientation after turning right: " + str(self.orientation))
 
     def turnLeft(self):
         self.orientation += 3
         self.orientation %= 4
+        send_serial("a")
         print("orientation after turning right: " + str(self.orientation))
 
     def goFwd(self):
@@ -166,9 +168,9 @@ class Maze(object):
 
         print("Going fwd")
         send_serial("w")
-        time.sleep(3)
+        time.sleep(1.5)
         send_serial("r")
-        time.sleep(3)
+        time.sleep(1.5)
         print("I have gone fwd")
 
     def goBkw(self):
@@ -185,24 +187,27 @@ class Maze(object):
             self.currentX += 1
 
         print("going back")
-        send_serial("s")
-        time.sleep(3)
+        self.turnRight()
+        time.sleep(1.5)
         send_serial("r")
-        time.sleep(3)
+        self.turnRight()
+        time.sleep(1.5)
+        self.goFwd()
+        time.sleep(1.5)
+        send_serial("r")
+        time.sleep(1.5)
         print("gone bwd")
 
     def goLeft(self):
         print("going left")
         self.turnLeft()
-        send_serial("a")
-        time.sleep(3)   
+        time.sleep(1.5)
         self.goFwd()
         print("gone left")
 
     def goRight(self):
         print("going right")
         self.turnRight()
-        send_serial("d")
         time.sleep(3) 
         self.goFwd()
         print("gone right")
@@ -352,17 +357,14 @@ class Maze(object):
         print ("i do vicolo cieco stuff")
 
 
-        send_serial("a")
-        time.sleep(3)
+        self.turnLeft()
 
 
         take_image_right()
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
 
-        send_serial("d")
-        time.sleep(3)
-
+        self.turnRight()
 
     def RR(self):
         print("fn RR")
