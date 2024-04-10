@@ -259,7 +259,6 @@ class Maze(object):
             absolute_walls.append(walls[3])
 
         self.mapMaze[self.currentX][self.currentY].walls = absolute_walls
-        self.mapMaze[self.currentX][self.currentY].setAsVisited()
         print("absolute walls: ", self.mapMaze[self.currentX][self.currentY].walls, "\trecorded walls: ", walls)
 
     def assignNumber(self):
@@ -350,8 +349,17 @@ class Maze(object):
             return self.hasCurrentBackWall()
 
     def vicoloCieco(self):
-            # TODO: turn and search for victims
         print ("i do vicolo cieco stuff")
+
+        self.turnLeft()
+
+
+        take_image_right()
+        lettera_right=read_image_letter_right()
+        analyse_victim_right(lettera_right)
+
+        self.turnRight()
+
 
     def RR(self):
         print("fn RR")
@@ -410,6 +418,10 @@ class Maze(object):
         lettera_left=read_image_letter_left()
         analyse_victim_left(lettera_left)
         colore_left=find_square_shapes_left()
+
+
+        self.mapMaze[self.currentX][self.currentY].setAsVisited()
+
 
         return walls, dati
 
