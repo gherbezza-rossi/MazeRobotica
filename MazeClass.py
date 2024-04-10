@@ -392,6 +392,7 @@ class Maze(object):
 
         self.turnLeft()
 
+
         take_image_right()
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
