@@ -37,11 +37,11 @@ class Maze(object):
         if self.orientation == 0:
             return self.mapMaze[self.currentX][self.currentY].hasLeftWall()
         elif self.orientation == 1:
-            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
+            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
         elif self.orientation == 2:
             return self.mapMaze[self.currentX][self.currentY].hasRightWall()
         elif self.orientation == 3:
-            return self.mapMaze[self.currentX][self.currentY].hasFrontWall()
+            return self.mapMaze[self.currentX][self.currentY].hasBackWall()
 
     def hasCurrentBackWall(self):
         if self.orientation == 0:
