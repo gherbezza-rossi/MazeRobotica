@@ -28,45 +28,6 @@ MAX_Y = 500
 MAX_X = 500
 MAX_VALUE = 1000000
 
-
-def send_medikit_right(): 
-    pwm1.ChangeDutyCycle(angle_to_percent(180))
-    time.sleep(1)
-    pwm1.ChangeDutyCycle(angle_to_percent(135))
-    time.sleep(0.5)
-    GPIO.output(pwm1_gpio, GPIO.LOW)
-
-def send_medikit_left(): 
-    pwm2.ChangeDutyCycle(angle_to_percent(180))
-    time.sleep(1)
-    pwm2.ChangeDutyCycle(angle_to_percent(135))
-    time.sleep(0.5)
-    GPIO.output(pwm2_gpio, GPIO.LOW)
-
-def analyse_victim_right(victim):
-    if victim == 'U':
-        led_5()
-    elif victim == 'S':
-        led_5()
-        send_medikit_right()
-    elif victim == 'H':
-        led_5()
-        send_medikit_right()
-        send_medikit_right()
-        
-def analyse_victim_left(victim):
-    if victim == 'U':
-        led_5()
-    elif victim == 'S':
-        led_5()
-        send_medikit_left()
-    elif victim == 'H':
-        led_5()
-        send_medikit_left()
-        send_medikit_left()
-
-
-
 class Maze(object):
     mapMaze = [[Block() for _ in range(MAX_X)] for _ in range(MAX_Y)]
     currentX = 250
@@ -451,3 +412,44 @@ class Maze(object):
         colore_left=find_square_shapes_left()
 
         return walls, dati
+
+
+
+
+def send_medikit_right(): 
+    pwm1.ChangeDutyCycle(angle_to_percent(180))
+    time.sleep(1)
+    pwm1.ChangeDutyCycle(angle_to_percent(135))
+    time.sleep(0.5)
+    GPIO.output(pwm1_gpio, GPIO.LOW)
+
+def send_medikit_left(): 
+    pwm2.ChangeDutyCycle(angle_to_percent(180))
+    time.sleep(1)
+    pwm2.ChangeDutyCycle(angle_to_percent(135))
+    time.sleep(0.5)
+    GPIO.output(pwm2_gpio, GPIO.LOW)
+
+def analyse_victim_right(victim):
+    if victim == 'U':
+        led_5()
+    elif victim == 'S':
+        led_5()
+        send_medikit_right()
+    elif victim == 'H':
+        led_5()
+        send_medikit_right()
+        send_medikit_right()
+        
+def analyse_victim_left(victim):
+    if victim == 'U':
+        led_5()
+    elif victim == 'S':
+        led_5()
+        send_medikit_left()
+    elif victim == 'H':
+        led_5()
+        send_medikit_left()
+        send_medikit_left()
+
+
