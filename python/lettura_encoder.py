@@ -6,20 +6,44 @@ import RPi.GPIO as GPIO
 import board
 import adafruit_tcs34725
 
+blu, bianco = 0
 i2c = board.I2C()  # uses board.SCL and board.SDA
 sensor = adafruit_tcs34725.TCS34725(i2c)
 user_input = input("calibrazione sensore colori, nero (start/no)")
 if user_input.lower() in ["start", "no"]:
-    nero = sensor.lux
+    nero = sensor.color_rgb_bytes[0]
     print(nero)
     user_input = input("calibrazione sensore colori, blu (start/no)")
     if user_input.lower() in ["start", "no"]:
-        blu = sensor.lux
+        blu = sensor.color_rgb_bytes[0]
         print(blu)
         user_input = input("calibrazione sensore colori, bianco (start/no)")
         if user_input.lower() in ["start", "no"]:
-            bianco = sensor.lux
+            bianco = sensor.color_rgb_bytes[0]
             print(bianco)
+
+
+sensor.integration_time = 500
+sensor.gain = 60
+# Main loop reading color and printing it every second.
+def read_sensor_data():
+    lux = sensor.color_rgb_bytes[0]
+    if lux >=(blu-5) and lux <= (blu+5):
+        print('blu')
+        return 'blu'
+    elif lux >=(bianco-5) and lux <= (bianco+5):
+        print('bianco')
+        return 'bianco'
+
+def read_sensor_color_black(nero):
+    while True:
+        lux = sensor.color_rgb_bytes[0]
+        if nero - 5 <= lux <= nero + 5:
+            print('nero')
+            return True
+        else:
+            return False
+
 
 ppr = 300.8 
 tstop = 20  
@@ -173,30 +197,3 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
             line = ser.readline().decode("utf-8")
             if line.strip() == "Complete":
                 break
-              
-
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-
-
-# Main loop reading color and printing it every second.
-#def read_sensor_data(blu,nero,bianco,specchio):
- #   lux = sensor.lux
-  #  if lux >=(blu-10) and lux <= (blu+10):
-   #     print('blu')
-   # elif lux >=(nero-10) and lux <= (nero+10):
-#        print('nero')
- #   elif lux >=(bianco-10) and lux <= (bianco+10):
-  #      print('bianco')
-   # elif lux >=(specchio-10) and lux <= (specchio+10):
-    #    print('specchio')
-
-def read_sensor_color_black(nero):
-    lux = sensor.lux
-    print(lux)
-    if lux >=(nero-2) and lux <= (nero+2):
-        print('nero')
-        return True
-    else:
-        return False

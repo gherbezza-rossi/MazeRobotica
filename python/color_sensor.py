@@ -15,35 +15,25 @@ sensor = adafruit_tcs34725.TCS34725(i2c)
 sensor.integration_time = 500
 sensor.gain = 60
 # Main loop reading color and printing it every second.
-def read_sensor_data(blu,nero,bianco,specchio):
-    lux = sensor.lux
-    if lux >=(blu-10) and lux <= (blu+10):
+def read_sensor_data(blu,bianco):
+    lux = sensor.color_rgb_bytes[0]
+    if lux >=(blu-5) and lux <= (blu+5):
         print('blu')
-    elif lux >=(nero-10) and lux <= (nero+10):
-        print('nero')
-    elif lux >=(bianco-10) and lux <= (bianco+10):
+        return 'blu'
+    elif lux >=(bianco-5) and lux <= (bianco+5):
         print('bianco')
-    elif lux >=(specchio-10) and lux <= (specchio+10):
-        print('specchio')
+        return 'bianco'
 
-def read_sensor_color_black(nero, times=10):
-    black_count = 0
+def read_sensor_color_black(nero):
     while True:
-        lux = sensor.lux
-        print(lux)
-        if nero - 2 <= lux <= nero + 2:
+        lux = sensor.color_rgb_bytes[0]
+        if nero - 5 <= lux <= nero + 5:
             print('nero')
-            black_count += 1
-            if black_count >= times:
-                return True
+            return True
         else:
-            black_count = 0  # Reset the count if color is not black
-        if black_count < times:
             return False
 
 
 while True:
     print('Color: ({0}, {1}, {2})'.format(*sensor.color_rgb_bytes))
-    print('Temperature: {0}K'.format(sensor.color_temperature))
-    print('Lux: {0}'.format(sensor.lux))
-    time.sleep(2)
+    time.sleep(0.5)

@@ -350,6 +350,9 @@ class Maze(object):
 #--------------------------------------------- SET BLOCK DATA
 
     def getValues(self, first):
+        color=read_sensor_data()
+        if color=='blu':
+            time.sleep(5)
         dati_tof = detect_walls()
         dati = dati_tof.split()
         print("- tof ", dati)
