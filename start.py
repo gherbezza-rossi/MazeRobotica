@@ -8,6 +8,8 @@ from MazeClass import *
 def goToStart():
     print("Going to start")
 
+    while myMaze.currentBlock().getValue() > 0:
+        print("current value: ", myMaze.currentBlock().getValue())
 
 
     # todo going to start
