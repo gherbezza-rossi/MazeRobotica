@@ -3,8 +3,23 @@ import serial
 import time
 import numpy as np
 import RPi.GPIO as GPIO
-from color_sensor import *
-from ..MazeClass import getNero
+import board
+import adafruit_tcs34725
+
+i2c = board.I2C()  # uses board.SCL and board.SDA
+sensor = adafruit_tcs34725.TCS34725(i2c)
+user_input = input("calibrazione sensore colori, nero (start/no)")
+if user_input.lower() in ["start", "no"]:
+    nero = sensor.lux
+    user_input = input("calibrazione sensore colori, blu (start/no)")
+    if user_input.lower() in ["start", "no"]:
+        blu = sensor.lux
+        user_input = input("calibrazione sensore colori, specchio (start/no)")
+        if user_input.lower() in ["start", "no"]:
+            specchio = sensor.lux
+            user_input = input("calibrazione sensore colori, bianco (start/no)")
+            if user_input.lower() in ["start", "no"]:
+                bianco = sensor.lux
 
 ppr = 300.8 
 tstop = 20  
@@ -47,7 +62,7 @@ ser.flushInput()
 ser.setDTR(True)
 time.sleep(1)
 
-def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/discesa
+def send_serial(a, nero): # todo restituisce 1 quando trova nero, 1 se è salita/discesa
     global last_AA, counter_A
     if a=="w":
         a=a.encode('utf-8')
@@ -64,9 +79,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                #nero=getNero()
-                #casella_nera=read_sensor_color_black(nero)
-                casella_nera=False
+                casella_nera=read_sensor_color_black(nero)
                 if casella_nera:
                     q=str("q")
                     ser.write(q.encode('utf-8'))
@@ -160,3 +173,28 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
             if line.strip() == "Complete":
                 break
               
+
+# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
+# SPDX-License-Identifier: MIT
+
+
+
+# Main loop reading color and printing it every second.
+def read_sensor_data(blu,nero,bianco,specchio):
+    lux = sensor.lux
+    if lux >=(blu-10) and lux <= (blu+10):
+        print('blu')
+    elif lux >=(nero-10) and lux <= (nero+10):
+        print('nero')
+    elif lux >=(bianco-10) and lux <= (bianco+10):
+        print('bianco')
+    elif lux >=(specchio-10) and lux <= (specchio+10):
+        print('specchio')
+
+def read_sensor_color_black(nero):
+    lux = sensor.lux
+    if lux >=(nero-10) and lux <= (nero+10):
+        print('nero')
+        return True
+    else:
+        return False

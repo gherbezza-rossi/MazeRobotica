@@ -1,6 +1,5 @@
-import GPIO
+import RPi.GPIO as GPIO
 from BlockClass import Block
-from python.lettura_encoder import *
 from python.servo import *
 from python.led_control import *
 
@@ -14,19 +13,8 @@ if user_input.lower() in ["yes", "no"]:
         print("settaggio sensore colori")
         print("settaggio telecamere")
         from python.telecamere import *
-        from python.color_sensor import *
-        user_input = input("calibrazione sensore colori, nero (start/no)")
-        if user_input.lower() in ["start", "no"]:
-            nero = sensor.lux
-            user_input = input("calibrazione sensore colori, blu (start/no)")
-            if user_input.lower() in ["start", "no"]:
-                blu = sensor.lux
-                user_input = input("calibrazione sensore colori, specchio (start/no)")
-                if user_input.lower() in ["start", "no"]:
-                    specchio = sensor.lux
-                    user_input = input("calibrazione sensore colori, bianco (start/no)")
-                    if user_input.lower() in ["start", "no"]:
-                        bianco = sensor.lux
+        from python.lettura_encoder import *
+        
 
 else:
     print("Exiting...")
@@ -186,7 +174,7 @@ class Maze(object):
 
         print("Going fwd")
 
-        black, stairs = send_serial("w")
+        black, stairs = send_serial("w", nero)
         if black: # if found black
             if self.orientation == 0:
                 self.currentY += 1
@@ -532,12 +520,14 @@ def send_medikit_right():
     pwm1.ChangeDutyCycle(angle_to_percent(135))
     time.sleep(0.5)
     GPIO.output(pwm1_gpio, GPIO.LOW)
+
 def send_medikit_left(): 
     pwm2.ChangeDutyCycle(angle_to_percent(180))
     time.sleep(1)
     pwm2.ChangeDutyCycle(angle_to_percent(135))
     time.sleep(0.5)
     GPIO.output(pwm2_gpio, GPIO.LOW)
+
 def analyse_victim_right(victim):
     if victim == 'U':
         led_5()
@@ -548,6 +538,7 @@ def analyse_victim_right(victim):
         led_5()
         send_medikit_right()
         send_medikit_right()
+
 def analyse_victim_left(victim):
     if victim == 'U':
         led_5()
@@ -558,5 +549,4 @@ def analyse_victim_left(victim):
         led_5()
         send_medikit_left()
         send_medikit_left()
-
 
