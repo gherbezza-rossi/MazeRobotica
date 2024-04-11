@@ -64,8 +64,9 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                nero=getNero()
-                casella_nera=read_sensor_color_black(nero)
+                #nero=getNero()
+                #casella_nera=read_sensor_color_black(nero)
+                casella_nera=False
                 if casella_nera:
                     q=str("q")
                     ser.write(q.encode('utf-8'))
@@ -75,7 +76,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                     while True:
                         current_aa = (left_A << 1) | right_A
                         position = (last_AA << 2) | current_aa
-                        counter_A -= outcome[position]
+                        counter_A += outcome[position]
                         last_AA = current_aa
                         if(counter_A>0): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                             q=str("q")
