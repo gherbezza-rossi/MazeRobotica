@@ -3,6 +3,7 @@ import serial
 import time
 import numpy as np
 import RPi.GPIO as GPIO
+from color_sensor import *
 
 ppr = 300.8 
 tstop = 20  
@@ -63,7 +64,15 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                if(counter_A<-2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                nero=read_sensor_color_black(nero)
+                if nero:
+                    q=str("q")
+                    ser.write(q.encode('utf-8'))
+                    time.sleep(1)
+                    counter_A=0
+                    last_AA=0
+                    miao="finito"
+                elif(counter_A<-2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     line = ser.readline().decode("utf-8")
                     print(line)
                     if line.strip() == "inclinato":
@@ -78,6 +87,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                         counter_A=0
                         last_AA=0
                         miao="finito"
+                        inclinato=True
                         break
                     else:
                         q=str("q")
@@ -86,13 +96,16 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                         counter_A=0
                         last_AA=0
                         miao="finito"
+                        inclinato=False
                         break
         
                 # stop loop in time = period
                 if time.time() > start + period : break
             if miao =="finito" : 
                 break
-
+    
+        return inclinato
+    
             
     elif a=="s":
         a=a.encode('utf-8')
