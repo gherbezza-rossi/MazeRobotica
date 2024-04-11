@@ -223,7 +223,7 @@ class Maze(object):
 
             # todo go back a bit
         elif stairs:
-
+            self.goneFwdStairs()
 
         time.sleep(1.5)
         send_serial("r")
