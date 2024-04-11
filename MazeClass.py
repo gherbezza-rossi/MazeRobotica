@@ -137,7 +137,7 @@ class Maze(object):
             return None
 
     def getLowerValue(self):
-        print("cerca valore minore intorno")
+        print("- cerca valore minore intorno")
         if not self.hasCurrentRightWall() and not self.getRightBlock() is None:
             right_value = self.getRightBlock().getValue()
         else:
@@ -168,13 +168,13 @@ class Maze(object):
         self.orientation += 1
         self.orientation %= 4
         send_serial("d")
-        print("orientation after turning right: " + str(self.orientation))
+        print("- orientation after turning right: " + str(self.orientation))
 
     def turnLeft(self):
         self.orientation += 3
         self.orientation %= 4
         send_serial("a")
-        print("orientation after turning right: " + str(self.orientation))
+        print("- orientation after turning right: " + str(self.orientation))
 
     def goFwd(self):
         if self.orientation == 0:
@@ -189,12 +189,12 @@ class Maze(object):
         elif self.orientation == 3:  # right
             self.currentX -= 1
 
-        print("Going fwd")
+        print("- Going fwd")
 
         black, stairs = send_serial("w")
         if black: # if found black
             
-            print("black recieved")
+            print("- black received")
 
             if self.orientation == 0:
                 self.currentY += 1
@@ -208,17 +208,19 @@ class Maze(object):
             elif self.orientation == 3:
                 self.currentX += 1
 
-            self.mapMaze[self.currentX][self.currentY].walls[1] = 1
+            self.mapMaze[self.currentX][self.currentY].walls[1] = "1"
 
             # go back a bit
 
         elif stairs:
+
+            print("- stairs received")
             self.goneFwdStairs()
 
         time.sleep(1.5)
         send_serial("r")
         time.sleep(1.5)
-        print("I have gone fwd")
+        print("- I have gone fwd")
 
     def goBkw(self):
         if self.orientation == 0:
@@ -233,7 +235,7 @@ class Maze(object):
         elif self.orientation == 3:  # right
             self.currentX += 1
 
-        print("going back")
+        print("- going back")
         self.turnRight()
         time.sleep(1.5)
         send_serial("r")
@@ -243,21 +245,21 @@ class Maze(object):
         time.sleep(1.5)
         send_serial("r")
         time.sleep(1.5)
-        print("gone bwd")
+        print("- gone bwd")
 
     def goLeft(self):
-        print("going left")
+        print("- going left")
         self.turnLeft()
         time.sleep(1.5)
         self.goFwd()
-        print("gone left")
+        print("- gone left")
 
     def goRight(self):
-        print("going right")
+        print("- going right")
         self.turnRight()
         time.sleep(3) 
         self.goFwd()
-        print("gone right")
+        print("- gone right")
 
 #--------------------------------------------- SPECIAL CASES
 
@@ -274,7 +276,7 @@ class Maze(object):
         elif self.orientation == 3:  # right
             self.currentX -= 1
 
-        self.mapMaze[self.currentX][self.currentY].walls = ["1", "0", "1", "0"]
+        self.mapMaze[self.currentX][self.currentY].walls = [1, 0, 1, 0]
 
         if self.orientation == 0:
             self.currentY -= 1
@@ -290,16 +292,16 @@ class Maze(object):
 
     def emptyGoing(self):
         while not self.currentBlock().hasWalls():
-            print("i am going into an empty room")
+            print("- i am going into an empty room")
             self.goFwd()
             self.getValues(False)
 
         while not self.currentBlock().respectedRR:
-            print("i am coming back from an empty room")
+            print("- i am coming back from an empty room")
             self.goBkw()
 
     def isAllVisited(self):
-        print("checking all visited")
+        print("- checking all visited")
 
         for x in range(MAX_X):
             for y in range(MAX_Y):
@@ -307,8 +309,8 @@ class Maze(object):
                     return False
         return True
 
-    def vicoloCieco(self):
-        print ("i do vicolo cieco stuff")
+    def closedBlock(self):
+        print("- i do closed block stuff")
 
         self.turnLeft()
 
@@ -348,15 +350,13 @@ class Maze(object):
 #--------------------------------------------- SET BLOCK DATA
 
     def getValues(self, first):
-
-
         dati_tof = detect_walls()
         dati = dati_tof.split()
-        print("tof ", dati)
+        print("- tof ", dati)
 
-        left = dati[0]
-        front = dati[1]
-        right = dati[3]
+        left = int(dati[0])
+        front = int(dati[1])
+        right = int(dati[3])
 
         walls = [left, front, right, 0]  # walls = [left, front, right, back]
         if first:
@@ -382,8 +382,7 @@ class Maze(object):
         return walls, dati
 
     def addBlockData(self, walls):
-        print("add data")
-        print("recived walls ", walls)
+        print("- add data")
         absolute_walls = []
 
         if self.orientation == 1:
@@ -453,7 +452,7 @@ class Maze(object):
 
 
 
-        print("absolute walls: ", self.currentBlock().walls, "\trecorded walls: ", walls)
+        print("- \tabsolute walls: ", self.currentBlock().walls, "\n- \trecorded walls: ", walls)
 
     def assignNumber(self):
 
@@ -486,67 +485,64 @@ class Maze(object):
             min(right, left, fwd, bkw) + 1
         )
 
-        print("i am assigning a number ", self.currentBlock().getValue())
+        print("- i am assigning a number ", self.currentBlock().getValue())
 
 #--------------------------------------------- MOVEMENT ALGO
     def emptyRoomsFinding(self, right_distance, left_distance):
-
-        print("looking for empty rooms")
 
         right = self.getRightBlock()
         left = self.getLeftBlock()
 
         if right_distance == 1 and right is not None and right.isVisited() == 0:
-            print("empty room in the right")
+            print("- empty room in the right")
             self.goRight()
             self.emptyGoing()
         elif left_distance == 1 and left is not None and left.isVisited() == 0:
-            print("empty room in the left")
+            print("- empty room in the left")
             self.goLeft()
             self.emptyGoing()
 
     def RR(self):
-        print("fn RR")
         if self.notBlockedAndNotVisited("r"):
-            print("right, no wall, not visited")
+            print("- right, no wall, not visited")
             self.goRight()
         elif self.notBlockedAndNotVisited("f"):
-            print("fwd, no wall, not visited")
+            print("- fwd, no wall, not visited")
             self.goFwd()
         elif self.notBlockedAndNotVisited("l"):
-            print("left, no wall, not visited")
+            print("- left, no wall, not visited")
             self.goLeft()
         elif not self.blocked("r"):
-            print("right, no wall, visited")
+            print("- right, no wall, visited")
             self.goRight()
         elif not self.blocked("f"):
-            print("fwd, no wall, visited")
+            print("- fwd, no wall, visited")
             self.goFwd()
         elif not self.blocked("l"):
-            print("left, no wall, visited")
+            print("- left, no wall, visited")
             self.goLeft()
         else:
-            print("vicolo cieco, walls")
-            self.vicoloCieco()
+            print("- closed block, walls")
+            self.closedBlock()
             self.goBkw()
 
         self.mapMaze[self.currentX][self.currentY].respectedRR = 1
 
     def goToStart(self):
-        print("Going to start")
+        print("- Going to start")
 
         while self.currentBlock().getValue() > 0:
-            print("current value: ", self.currentBlock().getValue())
+            print("- current value: ", self.currentBlock().getValue())
             min_value = self.getLowerValue()
 
             if min_value == 0:
-                print("go left")
+                print("- go left")
                 self.goLeft()
             elif min_value == 1:
-                print("go fwd")
+                print("- go fwd")
                 self.goFwd()
             elif min_value == 2:
-                print("go right")
+                print("- go right")
                 self.goRight()
 
 #-------------------------------------------------------------------- OTHER FUNCTIONS
