@@ -45,7 +45,7 @@ MAX_VALUE = 1000000
 
 class Maze(object):
     mapMaze = [[Block() for _ in range(MAX_X)] for _ in range(MAX_Y)]
-    currentX = MAX_X
+    currentX = MAX_X / 2
     currentY = MAX_Y - 1
     orientation = 0
         # 0 => lC=lA, fC=fA, rC=rA, bC=bA
@@ -148,7 +148,16 @@ class Maze(object):
         else:
             return None
 
-#--------------------------------------------- SINGLE MOVEMENTS
+    def getLowerValue(self):
+        print("cerca valore minore intorno")
+        if not self.currentBlock().hasRightWall() and not self.getRightBlock() is None:
+            right_value = self.getRightBlock().getValue()
+        if not self.currentBlock().hasLeftWall() and not self.getLeftBlock() is None:
+            left_value = self.getRightBlock().getValue()
+        if not self.currentBlock().hasRightWall() and not self.getRightBlock() is None:
+            right_value = self.getRightBlock().getValue()
+
+    #--------------------------------------------- SINGLE MOVEMENTS
 
     def turnRight(self):
         self.orientation += 1
@@ -327,7 +336,8 @@ class Maze(object):
         else:
             return self.hasCurrentBackWall()
 
-#--------------------------------------------- BLOCK DATA
+
+#--------------------------------------------- SET BLOCK DATA
 
     def getValues(self, first):
 
@@ -522,14 +532,12 @@ def send_medikit_right():
     pwm1.ChangeDutyCycle(angle_to_percent(135))
     time.sleep(0.5)
     GPIO.output(pwm1_gpio, GPIO.LOW)
-
 def send_medikit_left(): 
     pwm2.ChangeDutyCycle(angle_to_percent(180))
     time.sleep(1)
     pwm2.ChangeDutyCycle(angle_to_percent(135))
     time.sleep(0.5)
     GPIO.output(pwm2_gpio, GPIO.LOW)
-
 def analyse_victim_right(victim):
     if victim == 'U':
         led_5()
@@ -540,7 +548,6 @@ def analyse_victim_right(victim):
         led_5()
         send_medikit_right()
         send_medikit_right()
-        
 def analyse_victim_left(victim):
     if victim == 'U':
         led_5()
@@ -552,5 +559,4 @@ def analyse_victim_left(victim):
         send_medikit_left()
         send_medikit_left()
 
-def get_Nero():
-    return nero
+
