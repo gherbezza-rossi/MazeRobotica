@@ -4,6 +4,7 @@ import time
 import numpy as np
 import RPi.GPIO as GPIO
 from color_sensor import *
+from ..MazeClass import getNero
 
 ppr = 300.8 
 tstop = 20  
@@ -46,7 +47,6 @@ ser.flushInput()
 ser.setDTR(True)
 time.sleep(1)
 
-
 def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/discesa
     global last_AA, counter_A
     if a=="w":
@@ -64,8 +64,9 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                nero=read_sensor_color_black(nero)
-                if nero:
+                nero=getNero()
+                casella_nera=read_sensor_color_black(nero)
+                if casella_nera:
                     q=str("q")
                     ser.write(q.encode('utf-8'))
                     time.sleep(0.5)
@@ -117,7 +118,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
             if miao =="finito" : 
                 break
     
-        return inclinato, nero
+        return inclinato, casella_nera
     
             
     elif a=="s":

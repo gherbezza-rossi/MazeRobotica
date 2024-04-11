@@ -19,3 +19,5 @@ def led_5():
         GPIO.output(4,GPIO.LOW)
         time.sleep(0.5)
         i+=1
+
+led_5()
