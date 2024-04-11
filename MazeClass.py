@@ -151,6 +151,33 @@ class Maze(object):
         send_serial("a")
         print("orientation after turning right: " + str(self.orientation))
 
+    def goneFwdStairs(self):
+        if self.orientation == 0:
+            self.currentY -= 1
+
+        elif self.orientation == 1:
+            self.currentX += 1
+
+        elif self.orientation == 2:
+            self.currentY += 1
+
+        elif self.orientation == 3:  # right
+            self.currentX -= 1
+
+        self.mapMaze[self.currentX][self.currentY].walls = ["1", "0", "1", "0"]
+
+        if self.orientation == 0:
+            self.currentY -= 1
+
+        elif self.orientation == 1:
+            self.currentX += 1
+
+        elif self.orientation == 2:
+            self.currentY += 1
+
+        elif self.orientation == 3:  # right
+            self.currentX -= 1
+
     def goFwd(self):
         if self.orientation == 0:
             self.currentY -= 1
@@ -166,7 +193,8 @@ class Maze(object):
 
         print("Going fwd")
 
-        if send_serial("w"): # if found black
+        black, stairs = send_serial("w")
+        if black: # if found black
             if self.orientation == 0:
                 self.currentY += 1
 
@@ -182,6 +210,8 @@ class Maze(object):
             self.mapMaze[self.currentX][self.currentY].walls[1] = 1
 
             # todo go back a bit
+        elif stairs:
+
 
         time.sleep(1.5)
         send_serial("r")
@@ -443,6 +473,7 @@ class Maze(object):
 
 
     def getValues(self, first):
+
 
         dati_tof = detect_walls()
         dati = dati_tof.split()

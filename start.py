@@ -7,6 +7,9 @@ from MazeClass import *
 
 def goToStart():
     print("Going to start")
+
+
+
     # todo going to start
 
 

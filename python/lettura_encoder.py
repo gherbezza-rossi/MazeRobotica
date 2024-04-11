@@ -46,7 +46,7 @@ ser.setDTR(True)
 time.sleep(1)
 
 
-def send_serial(a): # todo restituisce true quando trova nero
+def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/discesa
     global last_AA, counter_A
     if a=="w":
         a=a.encode('utf-8')
