@@ -5,14 +5,6 @@ import signal
 from gpiozero import Button
 from MazeClass import *
 
-def goToStart():
-    print("Going to start")
-
-    while myMaze.currentBlock().getValue() > 0:
-        print("current value: ", myMaze.currentBlock().getValue())
-
-
-    # todo going to start
 
 
 def move(first):
@@ -22,7 +14,7 @@ def move(first):
     left_distance = dati[5]
     if myMaze.isAllVisited():
         print("is all visited")
-        goToStart()
+        myMaze.goToStart()
 
     else:
         print("distances[r, l]: ", right_distance, left_distance)
