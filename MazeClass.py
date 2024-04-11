@@ -33,7 +33,7 @@ MAX_VALUE = 1000000
 
 class Maze(object):
     mapMaze = [[Block() for _ in range(MAX_X)] for _ in range(MAX_Y)]
-    currentX = MAX_X / 2
+    currentX = int(MAX_X / 2)
     currentY = MAX_Y - 1
     orientation = 0
         # 0 => lC=lA, fC=fA, rC=rA, bC=bA
@@ -138,12 +138,29 @@ class Maze(object):
 
     def getLowerValue(self):
         print("cerca valore minore intorno")
-        if not self.currentBlock().hasRightWall() and not self.getRightBlock() is None:
+        if not self.hasCurrentRightWall() and not self.getRightBlock() is None:
             right_value = self.getRightBlock().getValue()
-        if not self.currentBlock().hasLeftWall() and not self.getLeftBlock() is None:
+        else:
+            right_value = MAX_VALUE
+
+        if not self.hasCurrentLeftWall() and not self.getLeftBlock() is None:
             left_value = self.getRightBlock().getValue()
-        if not self.currentBlock().hasRightWall() and not self.getRightBlock() is None:
-            right_value = self.getRightBlock().getValue()
+        else:
+            left_value = MAX_VALUE
+
+        if not self.hasCurrentFrontWall() and not self.getFwdBlock() is None:
+            fwd_value = self.getRightBlock().getValue()
+        else:
+            fwd_value = MAX_VALUE
+
+
+        if fwd_value <= right_value and fwd_value <= left_value:
+            return 1
+        elif left_value <= right_value and left_value <= fwd_value:
+            return 0
+        else:
+            return 2
+
 
     #--------------------------------------------- SINGLE MOVEMENTS
 
@@ -511,6 +528,23 @@ class Maze(object):
             self.goBkw()
 
         self.mapMaze[self.currentX][self.currentY].respectedRR = 1
+
+    def goToStart(self):
+        print("Going to start")
+
+        while self.currentBlock().getValue() > 0:
+            print("current value: ", self.currentBlock().getValue())
+            min_value = self.getLowerValue()
+
+            if min_value == 0:
+                print("go left")
+                self.goLeft()
+            elif min_value == 1:
+                print("go fwd")
+                self.goFwd()
+            elif min_value == 2:
+                print("go right")
+                self.goRight()
 
 #-------------------------------------------------------------------- OTHER FUNCTIONS
 
