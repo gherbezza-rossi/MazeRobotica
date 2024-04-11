@@ -71,7 +71,7 @@ def find_square_shapes_right():
             avg_hue = np.mean(roi[:,:,0])
             if avg_hue >= 30 and avg_hue <= 45: # Giallo
                 color = "Giallo"
-            elif avg_hue >= 50 and avg_hue <= 65: # Verde
+            elif avg_hue >= 50 and avg_hue <= 75: # Verde
                 color = "Verde"
             elif avg_hue >= 10 and avg_hue <= 25: # Rosso
                 color = "Rosso"
@@ -81,7 +81,7 @@ def find_square_shapes_right():
             print("Colore:", color)
             
             
-    cv2.imwrite("/home/sirio/Desktop/mask_image_left.png", img)
+    cv2.imwrite("/home/sirio/Desktop/mask_image_right.png", img)
     return color
 
 def close_camera_right():
@@ -154,3 +154,5 @@ def close_camera_right():
 	cam2.release()
 	cv2.destroyAllWindows()
      
+take_image_right()
+find_square_shapes_right()

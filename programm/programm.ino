@@ -1,6 +1,7 @@
 #include <Wire.h>
 #include <Adafruit_Sensor.h>
 #include <Adafruit_BNO055.h>
+#include "Adafruit_TCS34725.h"
 //motori dietro
 #define MD_PWM1 9
 #define MD_AIN2 8
@@ -16,6 +17,20 @@
 #define MA_BIN2 4
 #define MA_STB 2
 
+
+#define redpin 14
+#define greenpin 15
+#define bluepin 16
+
+
+#define commonAnode true
+
+// our RGB -> eye-recognized gamma color
+byte gammatable[256];
+
+
+Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_50MS, TCS34725_GAIN_4X);
+
 Adafruit_BNO055 bno = Adafruit_BNO055(55);
 
 int pot;
@@ -23,6 +38,9 @@ int out;
 float angle = 0.00;
 String prev_command="";
 int cacca = 0;
+int scoreggia=0;
+bool blu=false;
+bool nero=false;
 
 void setup() {
   Serial.begin(115200);
@@ -49,20 +67,58 @@ void setup() {
     Serial.print("Ooops, no BNO055 detected ... Check your wiring or I2C ADDR!");
     while(1);
   }
-  
+  if (tcs.begin()) {
+    //Serial.println("Found sensor");
+  } else {
+    Serial.println("No TCS34725 found ... check your connections");
+    while (1); // halt!
+  }
   delay(1000);
-    
+
+  #if defined(ARDUINO_ARCH_ESP32)
+    ledcAttach(redpin, 12000, 8);
+    ledcAttach(greenpin, 12000, 8);
+    ledcAttach(bluepin, 12000, 8);
+  #else
+    pinMode(redpin, OUTPUT);
+    pinMode(greenpin, OUTPUT);
+    pinMode(bluepin, OUTPUT);
+  #endif
+
+
+  for (int i=0; i<256; i++) {
+    float x = i;
+    x /= 255;
+    x = pow(x, 2.5);
+    x *= 255;
+
+    if (commonAnode) {
+      gammatable[i] = 255 - x;
+    } else {
+      gammatable[i] = x;
+    }
+    //Serial.println(gammatable[i]);
+  }
+
   bno.setExtCrystalUse(true);
 }
  
 void loop() {
   sensors_event_t event; 
   bno.getEvent(&event); 
+  float red, green, blue;
+  tcs.getRGB(&red, &green, &blue);
   if(prev_command=="w"){
     float currentAngle = event.orientation.x;
-    float yangle = event.orientation.y;
+    float yangle = event.orientation.y;  
     //Serial.print(yangle);
-    if(cacca==0 &&(yangle>10 || yangle<-10)){
+    //Serial.println(int(red));
+    if(122-5<int(red) && 122+5>int(red)){
+      stop();
+      prev_command="q";
+      nero=true;
+    }else{
+      if(cacca==0 &&(yangle>10 || yangle<-10)){
       cacca=1;
       Serial.println("inclinato");
     }
@@ -79,76 +135,77 @@ void loop() {
           angle=0;
         }
       }
-        if(currentAngle<angle+0.3 && currentAngle>angle-0.3){
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MA_PWM1, 200);
-          analogWrite(MA_PWM2, 200);
-        }else if(currentAngle>angle+3){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 100);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 100);
-        }else if(currentAngle<angle-3){
-          analogWrite(MD_PWM2, 100);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 100);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle>angle+1){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 130);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 130);
-        }else if(currentAngle<angle-1){
-          analogWrite(MD_PWM2, 130);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 130);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle>angle+0.5){
-          analogWrite(MD_PWM2, 150);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 150);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle<angle-0.5){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 150);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 150);
-        }else if(currentAngle>angle+0.3){
-          analogWrite(MD_PWM2, 170);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 170);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle<angle-0.3){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 170);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 170);
-        }else if(currentAngle>angle+0.2){
-          analogWrite(MD_PWM2, 180);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 180);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle<angle-0.2){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 190);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 190);
-        }else if(currentAngle>angle+0.1){
-          analogWrite(MD_PWM2, 190);
-          analogWrite(MD_PWM1, 200);
-          analogWrite(MA_PWM2, 190);
-          analogWrite(MA_PWM1, 200);
-        }else if(currentAngle<angle-0.1){
-          analogWrite(MD_PWM2, 200);
-          analogWrite(MD_PWM1, 190);
-          analogWrite(MA_PWM2, 200);
-          analogWrite(MA_PWM1, 190);
-        }    
+      if(currentAngle==angle){
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 200);
+      }else if(currentAngle>angle+3){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 100);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 100);
+      }else if(currentAngle<angle-3){
+        analogWrite(MD_PWM2, 100);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 100);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle>angle+1){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 130);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 130);
+      }else if(currentAngle<angle-1){
+        analogWrite(MD_PWM2, 130);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 130);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle>angle+0.5){
+        analogWrite(MD_PWM2, 150);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 150);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle<angle-0.5){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 150);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 150);
+      }else if(currentAngle>angle+0.3){
+        analogWrite(MD_PWM2, 170);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 170);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle<angle-0.3){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 170);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 170);
+      }else if(currentAngle>angle+0.2){
+        analogWrite(MD_PWM2, 180);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 180);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle<angle-0.2){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 190);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 190);
+      }else if(currentAngle>angle+0.1){
+        analogWrite(MD_PWM2, 190);
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MA_PWM2, 190);
+        analogWrite(MA_PWM1, 200);
+      }else if(currentAngle<angle-0.1){
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MD_PWM1, 190);
+        analogWrite(MA_PWM2, 200);
+        analogWrite(MA_PWM1, 190);
+      }    
  /*   Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
     Serial.println(currentAngle);*/
+      }
     }
   }
   else if(prev_command=="s")
@@ -163,7 +220,7 @@ void loop() {
         angle=0;
       }
     }
-      if(currentAngle<angle+0.3 && currentAngle>angle-0.3){
+      if(currentAngle==angle){
         analogWrite(MD_PWM1, 200);
         analogWrite(MD_PWM2, 200);
         analogWrite(MA_PWM1, 200);
@@ -246,8 +303,36 @@ void loop() {
         angle=0;
       }
     }
+    if(angle>=360){
+      angle=angle-360;
+    }else if(angle<0){
+      angle=angle+360;
+    }
+    Serial.print(angle);
+    Serial.print("  ");
+    Serial.println(currentAngle);
     float angledifference = angle - currentAngle;
-
+    if(angle==0 && (currentAngle<360 && currentAngle>270)){
+      destra();
+    }else if(angle==0 && (currentAngle>0 && currentAngle<=90)){
+      sinistra();
+    }else if(angle==90 && (currentAngle<90 && currentAngle>0)){
+      destra();
+    }else if(angle==90 && (currentAngle>90 && currentAngle<=180)){
+      sinistra();
+    }else if(angle==180 && (currentAngle<180 && currentAngle>90)){
+      destra();
+    }else if(angle==180 && (currentAngle>180 && currentAngle<=270)){
+      sinistra();
+    }else if(angle==270 && (currentAngle<270 && currentAngle>180)){
+      destra();
+    }else if(angle==270 && (currentAngle>270 && currentAngle<=359)){
+      sinistra();
+    }else if(angle==360 && (currentAngle<270 && currentAngle>180)){
+      destra();
+    }else if(angle==360 && (currentAngle>270 && currentAngle<=359)){
+      sinistra();
+    }
  /*   Serial.print("Angle: ");
     Serial.print(angle);
     Serial.print("   Current: ");
@@ -290,6 +375,22 @@ void loop() {
         case 'q':
           stop();
           prev_command="q";
+          Serial.println(int(red));
+          if(80-10<int(red) && 80+10>int(red)){
+            blu=true;      
+          }
+          if(122-10<int(red) && 122+10>int(red)){
+            nero=true;
+          }
+          if(blu==true){
+            Serial.println("Blu");
+            blu=false;
+          }else if(nero==true){
+            Serial.println("Nero");
+            nero=false;
+          }else{
+            Serial.println("Mao");
+          }
           break;
         case 's':
           indietro();
