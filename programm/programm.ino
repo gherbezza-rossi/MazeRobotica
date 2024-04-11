@@ -62,7 +62,7 @@ void loop() {
     float currentAngle = event.orientation.x;
     float yangle = event.orientation.y;
     //Serial.print(yangle);
-    if(cacca==0 &&(yangle>2 || yangle<-2)){
+    if(cacca==0 &&(yangle>10 || yangle<-10)){
       cacca=1;
       Serial.println("inclinato");
     }
