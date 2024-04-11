@@ -27,7 +27,7 @@ class Block:
 
     # ------------------------------------------------left wall
     def hasLeftWall(self):
-        return self.walls[0] == "1"
+        return self.walls[0] == "1"  or self.walls[0] == 1
     def getLeftWall(self):
         return self.walls[0]== "1"
     def setLeftWall(self, wall):
@@ -36,7 +36,7 @@ class Block:
 
     # ------------------------------------------------front wall
     def hasFrontWall(self):
-        return self.walls[1] == "1"
+        return self.walls[1] == "1" or self.walls[1] == 1
     def getFrontWall(self):
         return self.walls[1] == "1"
     def setFrontWall(self, wall):
@@ -44,7 +44,7 @@ class Block:
 
     # ------------------------------------------------right wall
     def hasRightWall(self):
-        return self.walls[2] == "1"
+        return self.walls[2] == "1" or self.walls[2] == 1
     def getRightWall(self):
         return self.walls[2] == "1"
     def setRightWall(self, wall):
@@ -52,9 +52,9 @@ class Block:
 
     # ------------------------------------------------back wall
     def hasBackWall(self):
-        return self.walls[3] == "1"
+        return self.walls[3] == "1" or self.walls[3] == 1
     def getBackWall(self):
-        return self.walls[3] == "1"
+        return self.walls[3]
     def setBackWall(self, wall):
         self.walls[3] = wall
 
