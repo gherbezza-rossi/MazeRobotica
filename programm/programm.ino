@@ -317,16 +317,31 @@ void loop() {
           break;
         case 'r':
           float currentAngle = event.orientation.x;
-          if((currentAngle-angle)>0){
-            sinistra();
-          }else{
-            destra();
-          }
           if(angle>=360){
             angle=angle-360;
           }else if(angle<0){
             angle=angle+360;
           }
+          Serial.println(currentAngle);
+          Serial.println(angle);
+          if(angle==0 && (currentAngle<=360 && currentAngle>270)){
+            destra();
+          }else if(angle==0 && (currentAngle>0 && currentAngle<=90)){
+            sinistra();
+          }else if(angle==90 && (currentAngle<90 && currentAngle>0)){
+            destra();
+          }else if(angle==90 && (currentAngle>90 && currentAngle<=180)){
+            sinistra();
+          }else if(angle==180 && (currentAngle<180 && currentAngle>90)){
+            destra();
+          }else if(angle==180 && (currentAngle>180 && currentAngle<=270)){
+            sinistra();
+          }else if(angle==270 && (currentAngle<270 && currentAngle>180)){
+            destra();
+          }else if(angle==270 && (currentAngle>270 && currentAngle<=359)){
+            sinistra();
+          }
+          
           prev_command="r";
         default:
           // Handle unknown command or do nothing

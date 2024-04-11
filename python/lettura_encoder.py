@@ -95,12 +95,12 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                print(counter_A)
                 if(counter_A>100): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     print("cacca1")
                     line = ser.readline().decode("utf-8")
                     print(line)
                     if line.strip() == "inclinato":
+                        print("mao")
                         while True:
                             line = ser.readline().decode("utf-8")
                             if line.strip() == "completata salita":
@@ -110,61 +110,81 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                         ser.write(q.encode('utf-8'))
                         time.sleep(1)
                         counter_A=0
+                        print("maoooo")
                         last_AA=0
                         miao="finito"
                         inclinato=True
                         break
                     else:
+                        r=str("r")
+                        ser.write(r.encode('utf-8'))
+                        time.sleep(1)
                         q=str("q")
                         ser.write(q.encode('utf-8'))
                         time.sleep(1)
                         inclinato=False
+                        print("mao")
                         counter_A=0
                         last_AA=0
                         casella_nera=read_sensor_color_black(nero)
                         print(casella_nera)
-                        if casella_nera:
+                        print("masodmndsiofndsogi")
+                        if casella_nera==True:
                             s=str("s")
                             ser.write(s.encode('utf-8'))
                             while True:
-                                current_aa = (left_A << 1) | right_A
-                                position = (last_AA << 2) | current_aa
-                                counter_A += outcome[position]
-                                last_AA = current_aa
-                                print(counter_A)
-                                if(counter_A>1): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
-                                    q=str("q")
-                                    ser.write(q.encode('utf-8'))
-                                    time.sleep(1)
-                                    counter_A=0
-                                    last_AA=0
-                                    miao="finito"
+                                left_A = GPIO.input(enc_Al_pin)
+                                right_A = GPIO.input(enc_Ar_pin)
+                                
+                                while True:
+                                    current_aa = (left_A << 1) | right_A
+                                    position = (last_AA << 2) | current_aa
+                                    counter_A += outcome[position]
+                                    last_AA = current_aa
+                                    if(counter_A<-100):
+                                        print("cacca2")
+                                        q=str("q")
+                                        ser.write(q.encode('utf-8'))
+                                        inclinato=False
+                                        counter_A=0
+                                        last_AA=0
+                                        miao="finito"
+                                        break
+                                    if time.time() > start + period : break
+                                if miao =="finito" : 
                                     break
                         else:
                             w=str("w")
                             ser.write(w.encode('utf-8'))
                             while True:
-                                current_aa = (left_A << 1) | right_A
-                                position = (last_AA << 2) | current_aa
-                                counter_A += outcome[position]
-                                last_AA = current_aa
-                                print(counter_A)
-                                if(counter_A>100):
-                                    print("cacca2")
-                                    q=str("q")
-                                    ser.write(q.encode('utf-8'))
-                                    time.sleep(0.5)
-                                    inclinato=False
-                                    counter_A=0
-                                    last_AA=0
-                                    miao="finito"
+                                left_A = GPIO.input(enc_Al_pin)
+                                right_A = GPIO.input(enc_Ar_pin)
+                                
+                                while True:
+                                    current_aa = (left_A << 1) | right_A
+                                    position = (last_AA << 2) | current_aa
+                                    counter_A += outcome[position]
+                                    last_AA = current_aa
+                                    if(counter_A>100):
+                                        r=str("r")
+                                        ser.write(r.encode('utf-8'))
+                                        time.sleep(1)
+                                        print("cacca2")
+                                        q=str("q")
+                                        ser.write(q.encode('utf-8'))
+                                        inclinato=False
+                                        counter_A=0
+                                        last_AA=0
+                                        miao="finito"
+                                        break
+                                    if time.time() > start + period : break
+                                if miao =="finito" : 
                                     break
-                                if time.time() > start + period : break
-
                 # stop loop in time = period
-                if time.time() > start + period : break
                 if miao =="finito" : 
                     break
+                if time.time() > start + period : break
+                
             if miao =="finito" : 
                 break
     
