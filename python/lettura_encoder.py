@@ -5,22 +5,14 @@ import numpy as np
 import RPi.GPIO as GPIO
 import board
 import adafruit_tcs34725
+from collections import Counter
 
-blu, bianco = 0
 i2c = board.I2C()  # uses board.SCL and board.SDA
 sensor = adafruit_tcs34725.TCS34725(i2c)
-user_input = input("calibrazione sensore colori, nero (start/no)")
-if user_input.lower() in ["start", "no"]:
-    nero = sensor.color_rgb_bytes[0]
-    print(nero)
-    user_input = input("calibrazione sensore colori, blu (start/no)")
-    if user_input.lower() in ["start", "no"]:
-        blu = sensor.color_rgb_bytes[0]
-        print(blu)
-        user_input = input("calibrazione sensore colori, bianco (start/no)")
-        if user_input.lower() in ["start", "no"]:
-            bianco = sensor.color_rgb_bytes[0]
-            print(bianco)
+
+
+blu=48
+nero=34
 
 
 sensor.integration_time = 500
@@ -31,13 +23,14 @@ def read_sensor_data():
     if lux >=(blu-5) and lux <= (blu+5):
         print('blu')
         return 'blu'
-    elif lux >=(bianco-5) and lux <= (bianco+5):
+    elif lux >=(255-5) and lux <= (255+5):
         print('bianco')
         return 'bianco'
 
 def read_sensor_color_black(nero):
     while True:
         lux = sensor.color_rgb_bytes[0]
+        print(lux)
         if nero - 5 <= lux <= nero + 5:
             print('nero')
             return True
@@ -60,8 +53,8 @@ tstart = time.perf_counter()
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
 
-enc_Al_pin = 27
-enc_Ar_pin = 22
+enc_Al_pin = 23
+enc_Ar_pin = 24
 
 
 
@@ -95,37 +88,16 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
         ser.write(a)
         miao=""
         while True:
-            # Encoder reading
             left_A = GPIO.input(enc_Al_pin)
             right_A = GPIO.input(enc_Ar_pin)
-        
-                
             while True:
                 current_aa = (left_A << 1) | right_A
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                casella_nera=read_sensor_color_black(nero)
-                if casella_nera:
-                    s=str("s")
-                    ser.write(s.encode('utf-8'))
-                    while True:
-                        print(current_aa)
-                        print(counter_A)
-                        current_aa = (left_A << 1) | right_A
-                        position = (last_AA << 2) | current_aa
-                        counter_A += outcome[position]
-                        last_AA = current_aa
-                        if(counter_A>0): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
-                            q=str("q")
-                            ser.write(q.encode('utf-8'))
-                            time.sleep(1)
-                            counter_A=0
-                            last_AA=0
-                            miao="finito"
-                            break
-                    break
-                if(counter_A<-2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                print(counter_A)
+                if(counter_A>100): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                    print("cacca1")
                     line = ser.readline().decode("utf-8")
                     print(line)
                     if line.strip() == "inclinato":
@@ -146,14 +118,53 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                         q=str("q")
                         ser.write(q.encode('utf-8'))
                         time.sleep(1)
+                        inclinato=False
                         counter_A=0
                         last_AA=0
-                        miao="finito"
-                        inclinato=False
-                        break
-        
+                        casella_nera=read_sensor_color_black(nero)
+                        print(casella_nera)
+                        if casella_nera:
+                            s=str("s")
+                            ser.write(s.encode('utf-8'))
+                            while True:
+                                current_aa = (left_A << 1) | right_A
+                                position = (last_AA << 2) | current_aa
+                                counter_A += outcome[position]
+                                last_AA = current_aa
+                                print(counter_A)
+                                if(counter_A>1): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                                    q=str("q")
+                                    ser.write(q.encode('utf-8'))
+                                    time.sleep(1)
+                                    counter_A=0
+                                    last_AA=0
+                                    miao="finito"
+                                    break
+                        else:
+                            w=str("w")
+                            ser.write(w.encode('utf-8'))
+                            while True:
+                                current_aa = (left_A << 1) | right_A
+                                position = (last_AA << 2) | current_aa
+                                counter_A += outcome[position]
+                                last_AA = current_aa
+                                print(counter_A)
+                                if(counter_A>100):
+                                    print("cacca2")
+                                    q=str("q")
+                                    ser.write(q.encode('utf-8'))
+                                    time.sleep(0.5)
+                                    inclinato=False
+                                    counter_A=0
+                                    last_AA=0
+                                    miao="finito"
+                                    break
+                                if time.time() > start + period : break
+
                 # stop loop in time = period
                 if time.time() > start + period : break
+                if miao =="finito" : 
+                    break
             if miao =="finito" : 
                 break
     
