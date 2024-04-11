@@ -208,7 +208,7 @@ class Maze(object):
             elif self.orientation == 3:
                 self.currentX += 1
 
-            self.mapMaze[self.currentX][self.currentY].walls[1] = 1
+            self.mapMaze[self.currentX][self.currentY].walls[1] = "1"
 
             # go back a bit
 
@@ -358,9 +358,9 @@ class Maze(object):
         front = dati[1]
         right = dati[3]
 
-        walls = [left, front, right, 0]  # walls = [left, front, right, back]
+        walls = [left, front, right, "0"]  # walls = [left, front, right, back]
         if first:
-            walls[3] = 1
+            walls[3] = "1"
 
         self.addBlockData(walls)
         self.assignNumber()
