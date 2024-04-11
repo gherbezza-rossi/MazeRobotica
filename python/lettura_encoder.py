@@ -79,11 +79,9 @@ def send_serial(a, nero): # todo restituisce 1 quando trova nero, 1 se è salita
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
+                print(counter_A)
                 casella_nera=read_sensor_color_black(nero)
                 if casella_nera:
-                    q=str("q")
-                    ser.write(q.encode('utf-8'))
-                    time.sleep(0.5)
                     s=str("s")
                     ser.write(s.encode('utf-8'))
                     while True:
@@ -132,7 +130,7 @@ def send_serial(a, nero): # todo restituisce 1 quando trova nero, 1 se è salita
             if miao =="finito" : 
                 break
     
-        return inclinato, casella_nera
+        return casella_nera, inclinato 
     
             
     elif a=="s":

@@ -193,6 +193,9 @@ class Maze(object):
 
         black, stairs = send_serial("w", nero)
         if black: # if found black
+            
+            print("black recieved")
+
             if self.orientation == 0:
                 self.currentY += 1
 
