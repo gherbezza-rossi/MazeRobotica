@@ -24,3 +24,11 @@ def read_sensor_data(blu,nero,bianco,specchio):
         print('bianco')
     elif lux >=(specchio-10) and lux <= (specchio+10):
         print('specchio')
+
+def read_sensor_color_black(nero):
+    lux = sensor.lux
+    if lux >=(nero-10) and lux <= (nero+10):
+        print('nero')
+        return True
+    else:
+        return False

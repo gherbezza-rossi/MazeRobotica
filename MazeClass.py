@@ -552,4 +552,5 @@ def analyse_victim_left(victim):
         send_medikit_left()
         send_medikit_left()
 
-
+def get_Nero():
+    return nero
