@@ -365,12 +365,12 @@ void loop() {
         analogWrite(MD_PWM2, 100);
         analogWrite(MA_PWM1, 100);
         analogWrite(MA_PWM2, 100);
-    } else if ((angledifference >= -5 || angledifference <= 5) && (angledifference < -0.1 || angledifference > 0.1)) {
+    } else if ((angledifference >= -5 || angledifference <= 5) && (angledifference < -1 || angledifference > 1)) {
         analogWrite(MD_PWM1, 40);
         analogWrite(MD_PWM2, 40);
         analogWrite(MA_PWM1, 40);
         analogWrite(MA_PWM2, 40);
-    } else if (angledifference == 0.0) {
+    } else{
         stop();
         prev_command="q";
         Serial.println("Complete");

@@ -75,9 +75,9 @@ def detect_walls():
 
         for index in range(len(vl53)):
             # Check if the three measurements are consistent and within range
-            if 35 <= ranges_1[index] <= 5000 and \
-            35 <= ranges_2[index] <= 5000 and \
-            35 <= ranges_3[index] <= 5000 and \
+            if 10 <= ranges_1[index] <= 5000 and \
+            10 <= ranges_2[index] <= 5000 and \
+            10 <= ranges_3[index] <= 5000 and \
             abs(ranges_1[index] - ranges_2[index]) < 100 and \
             abs(ranges_1[index] - ranges_3[index]) < 100 and \
             abs(ranges_2[index] - ranges_3[index]) < 100:
@@ -106,4 +106,5 @@ def detect_walls():
         return sensor_ranges_str
 
 
-print(detect_walls())
+#print(detect_range())
+#print(detect_walls())

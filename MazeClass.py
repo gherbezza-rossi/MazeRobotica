@@ -203,9 +203,8 @@ class Maze(object):
             print("- stairs received")
             self.goneFwdStairs()
 
-        time.sleep(0.5)
-        send_serial("r")
-        time.sleep(0.5)
+        time.sleep(1.5)
+        #send_serial("r")
         print("- I have gone fwd")
 
     def goBkw(self):
@@ -519,7 +518,7 @@ class Maze(object):
     def goToStart(self):
         print("- Going to start")
 
-        while self.currentBlock().getValue() > 0:
+        while self.currentBlock().getValue() > 1:
             print("- current value: ", self.currentBlock().getValue())
             min_value = self.getLowerValue()
 

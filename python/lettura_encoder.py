@@ -80,9 +80,11 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 counter_A += outcome[position]
                 last_counter = counter_A
                 last_AA = current_aa
-                if(counter_A>2160 or counter>20000): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                if(counter_A>2100 or counter>20000): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     while True:
-                        line = ser.readline().decode("utf-8")
+                        line = ser.readline()
+                        #print(line)
+                        line = line.decode("utf-8")
                         if line.strip() == "Nero":
                             print("nero")
                             casella_nera=True
@@ -113,7 +115,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                             print("inclinato")
                             while True:
                                 line = ser.readline().decode("utf-8")
-                                print(line)
+                                #print(line)
                                 if line.strip() == "completata salita":
                                     time.sleep(0.5)
                                     break
@@ -151,7 +153,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 
             if miao =="finito" : 
                 break
-    
+        print("finito")
         return casella_nera, inclinato 
     
             
@@ -186,7 +188,9 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
     elif a=="a" or a=="d" or a=="r":
         a=a.encode('utf-8')
         ser.write(a)
+        print("send r")
         while True:
             line = ser.readline().decode("utf-8")
+            #print(line)
             if line.strip() == "Complete":
                 break
