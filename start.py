@@ -9,15 +9,17 @@ from MazeClass import *
 
 def move(first):
     print("first visited")
-    walls, dati = myMaze.getValues(first)
-    right_distance = dati[4]
-    left_distance = dati[5]
+    if not myMaze.currentBlock().isVisited():
+        walls, dati = myMaze.getValues(first)
+        right_distance = dati[4]
+        left_distance = dati[5]
+
+
     if myMaze.isAllVisited():
         print("is all visited")
         myMaze.goToStart()
-
     else:
-        print("distances[r, l]: ", right_distance, left_distance)
+        #print("distances[r, l]: ", right_distance, left_distance)
 
         print("fn start")
         print("orientation: ", myMaze.orientation)

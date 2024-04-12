@@ -223,13 +223,13 @@ class Maze(object):
         print("- going back")
         self.turnRight()
         time.sleep(0.5)
-        send_serial("r")
+        #send_serial("r")
         self.turnRight()
         time.sleep(0.5)
         self.goFwd()
         time.sleep(0.5)
-        send_serial("r")
-        time.sleep(0.5)
+        #send_serial("r")
+        #time.sleep(0.5)
         print("- gone bwd")
 
     def goLeft(self):
@@ -303,7 +303,22 @@ class Maze(object):
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
 
-        self.turnRight()
+        self.turnLeft()
+        time.sleep(0.5)
+        self.goFwd()
+        time.sleep(0.5)
+
+        if self.orientation == 0:
+            self.currentY += 1
+
+        elif self.orientation == 1:
+            self.currentX -= 1
+
+        elif self.orientation == 2:
+            self.currentY -= 1
+
+        elif self.orientation == 3:  # right
+            self.currentX += 1
 
     def notBlockedAndNotVisited(self, direction):
         if direction == "r":
