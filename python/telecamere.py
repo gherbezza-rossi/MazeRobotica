@@ -4,28 +4,19 @@ import os
 from PIL import Image
 import numpy as np
 
-
-cam1 = cv2.VideoCapture(0)
-cam2 = cv2.VideoCapture(2)
-
 img_counter = 0
 
-
-
-
-
-
-
-
-
 def take_image_right():
-	ret1, frame1 = cam1.read()
-	if not ret1:
-		print("failed to grab frame")
-	else:
-		img_name1 = "/home/sirio/Desktop/opencv_frame_right.png"
-		cv2.imwrite(img_name1, frame1)
-		print("written!")
+    cam1 = cv2.VideoCapture(0)
+    ret1, frame1 = cam1.read()
+    if not ret1:
+        print("failed to grab frame")
+    else:
+        img_name1 = "/home/sirio/Desktop/opencv_frame_right.png"
+        cv2.imwrite(img_name1, frame1)
+        print("written!")
+        cam1.release()
+        cv2.destroyAllWindows()
           
 def read_image_letter_right():
     bgr_img1 = cv2.imread("/home/sirio/Desktop/opencv_frame_right.png")  # Load the image
@@ -84,18 +75,18 @@ def find_square_shapes_right():
     cv2.imwrite("/home/sirio/Desktop/mask_image_right.png", img)
     return color
 
-def close_camera_right():
-	cam1.release()
-	cv2.destroyAllWindows()
   
 def take_image_left():
-	ret2, frame2 = cam2.read()
-	if not ret2:
-		print("failed to grab frame")
-	else:
-		img_name2 = "/home/sirio/Desktop/opencv_frame_left.png"
-		cv2.imwrite(img_name2, frame2)
-		print("written!")
+    cam2 = cv2.VideoCapture(2)
+    ret2, frame2 = cam2.read()
+    if not ret2:
+        print("failed to grab frame")
+    else:
+        img_name2 = "/home/sirio/Desktop/opencv_frame_left.png"
+        cv2.imwrite(img_name2, frame2)
+        print("written!")
+        cam2.release()
+        cv2.destroyAllWindows()
           
 def read_image_letter_left():
     bgr_img2 = cv2.imread("/home/sirio/Desktop/opencv_frame_left.png")  # Load the image
@@ -149,10 +140,3 @@ def find_square_shapes_left():
     cv2.imwrite("/home/sirio/Desktop/mask_image_left.png", img)
     return color
 
-
-def close_camera_right():
-	cam2.release()
-	cv2.destroyAllWindows()
-     
-take_image_right()
-find_square_shapes_right()

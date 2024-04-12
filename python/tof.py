@@ -104,3 +104,6 @@ def detect_walls():
         
         sensor_ranges_str = " ".join(processed_ranges)
         return sensor_ranges_str
+
+
+print(detect_walls())

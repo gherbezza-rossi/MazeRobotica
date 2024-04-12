@@ -1,23 +1,9 @@
 import RPi.GPIO as GPIO
 from BlockClass import Block
 from python.servo import *
-from python.led_control import *
-
-
-user_input = input("hai rimosso il cavo del sensore colori? (yes/no): ")
-if user_input.lower() in ["yes", "no"]:
-    print("settaggio tof")
-    from python.tof import *
-    user_input = input("hai ricollegato il sensore? (yes/no): ")
-    if user_input.lower() in ["yes", "no"]:
-        print("settaggio sensore colori")
-        print("settaggio telecamere")
-        from python.telecamere import *
-        from python.lettura_encoder import *
-        
-
-else:
-    print("Exiting...")
+from python.tof import *
+from python.telecamere import *
+from python.lettura_encoder import *
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(pwm1_gpio, GPIO.OUT)
@@ -34,7 +20,7 @@ MAX_VALUE = 1000000
 class Maze(object):
     mapMaze = [[Block() for _ in range(MAX_X)] for _ in range(MAX_Y)]
     currentX = int(MAX_X / 2)
-    currentY = MAX_Y - 1
+    currentY = MAX_Y - 2
     orientation = 0
         # 0 => lC=lA, fC=fA, rC=rA, bC=bA
         # 1 (90 to the right) => lA=bC, fA= lC, rA=fC, bA=rC
@@ -217,9 +203,9 @@ class Maze(object):
             print("- stairs received")
             self.goneFwdStairs()
 
-        time.sleep(1.5)
+        time.sleep(0.5)
         send_serial("r")
-        time.sleep(1.5)
+        time.sleep(0.5)
         print("- I have gone fwd")
 
     def goBkw(self):
@@ -237,27 +223,27 @@ class Maze(object):
 
         print("- going back")
         self.turnRight()
-        time.sleep(1.5)
+        time.sleep(0.5)
         send_serial("r")
         self.turnRight()
-        time.sleep(1.5)
+        time.sleep(0.5)
         self.goFwd()
-        time.sleep(1.5)
+        time.sleep(0.5)
         send_serial("r")
-        time.sleep(1.5)
+        time.sleep(0.5)
         print("- gone bwd")
 
     def goLeft(self):
         print("- going left")
         self.turnLeft()
-        time.sleep(1.5)
+        time.sleep(0.5)
         self.goFwd()
         print("- gone left")
 
     def goRight(self):
         print("- going right")
         self.turnRight()
-        time.sleep(3) 
+        time.sleep(0.5) 
         self.goFwd()
         print("- gone right")
 
@@ -360,7 +346,7 @@ class Maze(object):
 
         walls = [left, front, right, 0]  # walls = [left, front, right, back]
         if first:
-            walls[3] = 1
+            walls[3] = 0
 
         self.addBlockData(walls)
         self.assignNumber()
@@ -369,11 +355,13 @@ class Maze(object):
         lettera_right=read_image_letter_right()
         analyse_victim_right(lettera_right)
         colore_right=find_square_shapes_right()
+        analyse_victim_right(colore_right)
 
-        #take_image_left()
-        #lettera_left=read_image_letter_left()
-        #analyse_victim_left(lettera_left)
-        #colore_left=find_square_shapes_left()
+        take_image_left()
+        lettera_left=read_image_letter_left()
+        analyse_victim_left(lettera_left)
+        colore_left=find_square_shapes_left()
+        analyse_victim_left(colore_left)
 
 
         self.mapMaze[self.currentX][self.currentY].setAsVisited()
@@ -571,6 +559,15 @@ def analyse_victim_right(victim):
         led_5()
         send_medikit_right()
         send_medikit_right()
+    elif victim == 'Verde':
+        led_5()
+    elif victim == 'Giallo':
+        led_5()
+        send_medikit_right()
+    elif victim == 'Rosso':
+        led_5()
+        send_medikit_right()
+        send_medikit_right()
 
 def analyse_victim_left(victim):
     if victim == 'U':
@@ -582,4 +579,12 @@ def analyse_victim_left(victim):
         led_5()
         send_medikit_left()
         send_medikit_left()
-
+    elif victim == 'Verde':
+        led_5()
+    elif victim == 'Giallo':
+        led_5()
+        send_medikit_right()
+    elif victim == 'Rosso':
+        led_5()
+        send_medikit_right()
+        send_medikit_right()

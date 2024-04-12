@@ -4,7 +4,6 @@ import time
 import numpy as np
 import RPi.GPIO as GPIO
 import board
-from led_control import *
 
 
 ppr = 300.8 
@@ -21,10 +20,25 @@ tstart = time.perf_counter()
 
 GPIO.setmode(GPIO.BCM)
 GPIO.setwarnings(False)
+GPIO.setup(4,GPIO.OUT)
 
 enc_Al_pin = 23
 enc_Ar_pin = 24
 
+def led_on():
+    GPIO.output(4,GPIO.HIGH)
+    
+def led_off():
+    GPIO.output(4,GPIO.LOW)
+
+
+def led_5():
+    for i in range(5):
+        GPIO.output(4,GPIO.HIGH)
+        time.sleep(0.5)
+        GPIO.output(4,GPIO.LOW)
+        time.sleep(0.5)
+        i+=1
 
 
 GPIO.setup(enc_Al_pin, GPIO.IN)
@@ -67,8 +81,6 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 last_counter = counter_A
                 last_AA = current_aa
                 if(counter_A>2160 or counter>20000): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
-                    q=str("q")
-                    ser.write(q.encode('utf-8'))
                     while True:
                         line = ser.readline().decode("utf-8")
                         if line.strip() == "Nero":
@@ -98,9 +110,10 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                                     break
                             break
                         if line.strip() == "inclinato":
-                            print("mao")
+                            print("inclinato")
                             while True:
                                 line = ser.readline().decode("utf-8")
+                                print(line)
                                 if line.strip() == "completata salita":
                                     time.sleep(0.5)
                                     break
@@ -108,20 +121,24 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                             ser.write(q.encode('utf-8'))
                             time.sleep(1)
                             counter_A=0
-                            print("maoooo")
+                            print("salita completata")
                             last_AA=0
                             miao="finito"
                             inclinato=True
                             break
                         if line.strip() == "Blu":
+                            q=str("q")
+                            ser.write(q.encode('utf-8'))
                             print("blu")
                             time.sleep(5)
                             counter_A=0
                             last_AA=0
                             miao="finito"
                             break
-                        if line.strip() == "Mao":
-                            print("Mao")
+                        if line.strip() == "BIANCOS":
+                            q=str("q")
+                            ser.write(q.encode('utf-8'))
+                            print("BIANCOS")
                             counter_A=0
                             last_AA=0
                             miao="finito"

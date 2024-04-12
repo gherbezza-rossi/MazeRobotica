@@ -21,7 +21,7 @@ def move(first):
 
         print("fn start")
         print("orientation: ", myMaze.orientation)
-        myMaze.emptyRoomsFinding(right_distance, left_distance)
+        #myMaze.emptyRoomsFinding(right_distance, left_distance)
         myMaze.RR()
 
 myMaze = Maze()

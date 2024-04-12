@@ -25,8 +25,8 @@
 
 #define commonAnode true
 
-#define COLOR_blu 92
-#define COLOR_nero 123
+#define COLOR_blu 100
+#define COLOR_nero 124
 
 // our RGB -> eye-recognized gamma color
 byte gammatable[256];
@@ -116,12 +116,24 @@ void loop() {
     float yangle = event.orientation.y;  
     //Serial.print(yangle);
     //Serial.println(int(red));
+    if(blu==true){
+      Serial.println("Blu");
+      blu=false;
+    }else if(nero==true){
+      Serial.println("Nero");
+      nero=false;
+    }else{
+      Serial.println("BIANCOS");
+    }
+    if(COLOR_blu<int(blue)){
+      blu=true;      
+    }
     if(COLOR_nero-3<int(red) && COLOR_nero+3>int(red)){
       stop();
       prev_command="q";
       nero=true;
     }else{
-      if(cacca==0 &&(yangle>10 || yangle<-10)){
+      if(cacca==0 &&(yangle>6 || yangle<-6)){
       cacca=1;
       Serial.println("inclinato");
     }
@@ -344,26 +356,36 @@ void loop() {
     Serial.println(angledifference); */
 
     if (angledifference < -10 || angledifference > 10) {
+        analogWrite(MD_PWM1, 200);
+        analogWrite(MD_PWM2, 200);
+        analogWrite(MA_PWM1, 200);
+        analogWrite(MA_PWM2, 200);
+    } else if ((angledifference >= -10 || angledifference <= 10) && (angledifference < -5 || angledifference > 5)) {
         analogWrite(MD_PWM1, 100);
         analogWrite(MD_PWM2, 100);
         analogWrite(MA_PWM1, 100);
         analogWrite(MA_PWM2, 100);
-    } else if ((angledifference >= -10 || angledifference <= 10) && (angledifference < -5 || angledifference > 5)) {
-        analogWrite(MD_PWM1, 30);
-        analogWrite(MD_PWM2, 30);
-        analogWrite(MA_PWM1, 30);
-        analogWrite(MA_PWM2, 30);
     } else if ((angledifference >= -5 || angledifference <= 5) && (angledifference < -0.1 || angledifference > 0.1)) {
-        analogWrite(MD_PWM1, 20);
-        analogWrite(MD_PWM2, 20);
-        analogWrite(MA_PWM1, 20);
-        analogWrite(MA_PWM2, 20);
+        analogWrite(MD_PWM1, 40);
+        analogWrite(MD_PWM2, 40);
+        analogWrite(MA_PWM1, 40);
+        analogWrite(MA_PWM2, 40);
     } else if (angledifference == 0.0) {
         stop();
         prev_command="q";
         Serial.println("Complete");
     }
     
+  }else if(prev_command=="q"){
+    if(blu==true){
+      Serial.println("Blu");
+      blu=false;
+    }else if(nero==true){
+      Serial.println("Nero");
+      nero=false;
+    }else{
+      Serial.println("BIANCOS");
+    }
   }
 
   if (Serial.available() > 0) {
@@ -378,22 +400,6 @@ void loop() {
         case 'q':
           stop();
           prev_command="q";
-          Serial.println(int(red));
-          if(COLOR_blu-3<int(red) && COLOR_blu+3>int(red)){
-            blu=true;      
-          }
-          if(COLOR_nero-3<int(red) && COLOR_nero+3>int(red)){
-            nero=true;
-          }
-          if(blu==true){
-            Serial.println("Blu");
-            blu=false;
-          }else if(nero==true){
-            Serial.println("Nero");
-            nero=false;
-          }else{
-            Serial.println("Mao");
-          }
           break;
         case 's':
           indietro();
