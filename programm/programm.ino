@@ -25,6 +25,9 @@
 
 #define commonAnode true
 
+#define COLOR_blu 92
+#define COLOR_nero 123
+
 // our RGB -> eye-recognized gamma color
 byte gammatable[256];
 
@@ -113,7 +116,7 @@ void loop() {
     float yangle = event.orientation.y;  
     //Serial.print(yangle);
     //Serial.println(int(red));
-    if(122-5<int(red) && 122+5>int(red)){
+    if(COLOR_nero-3<int(red) && COLOR_nero+3>int(red)){
       stop();
       prev_command="q";
       nero=true;
@@ -376,10 +379,10 @@ void loop() {
           stop();
           prev_command="q";
           Serial.println(int(red));
-          if(80-10<int(red) && 80+10>int(red)){
+          if(COLOR_blu-3<int(red) && COLOR_blu+3>int(red)){
             blu=true;      
           }
-          if(122-10<int(red) && 122+10>int(red)){
+          if(COLOR_nero-3<int(red) && COLOR_nero+3>int(red)){
             nero=true;
           }
           if(blu==true){

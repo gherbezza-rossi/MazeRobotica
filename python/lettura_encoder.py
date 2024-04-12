@@ -4,6 +4,7 @@ import time
 import numpy as np
 import RPi.GPIO as GPIO
 import board
+from led_control import *
 
 
 ppr = 300.8 
@@ -77,6 +78,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                             ser.write(s.encode('utf-8'))
                             while True:
                                 # Encoder reading
+                                counter_A=counter_A/2
                                 left_A = GPIO.input(enc_Al_pin)
                                 right_A = GPIO.input(enc_Ar_pin)
                                 while True:
@@ -85,7 +87,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                                     counter_A += outcome[position]
                                     last_AA = current_aa
                                     print(counter_A)
-                                    if(counter_A<1700): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                                    if(counter_A<0): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                                         q=str("q")
                                         ser.write(q.encode('utf-8'))
                                         miao="finito"
@@ -113,6 +115,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                             break
                         if line.strip() == "Blu":
                             print("blu")
+                            time.sleep(5)
                             counter_A=0
                             last_AA=0
                             miao="finito"
@@ -150,7 +153,7 @@ def send_serial(a): # todo restituisce 1 quando trova nero, 1 se è salita/disce
                 position = (last_AA << 2) | current_aa
                 counter_A += outcome[position]
                 last_AA = current_aa
-                if(counter_A<-2160): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
+                if(counter_A<-2000): #serve 1.44 per arrivare a 30cm, cioè un giro completo più 0.44 giri
                     q=str("q")
                     ser.write(q.encode('utf-8'))
                     miao="finito"
