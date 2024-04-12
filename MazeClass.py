@@ -507,6 +507,8 @@ class Maze(object):
             self.emptyGoing()
 
     def RR(self):
+        print("right wall: ", self.hasCurrentRightWall())
+        print("right block: ", self.getRightBlock())
         if self.notBlockedAndNotVisited("r"):
             print("- right, no wall, not visited")
             self.goRight()
