@@ -526,7 +526,6 @@ class Maze(object):
         else:
             print("- closed block, walls")
             self.closedBlock()
-            self.goBkw()
 
         self.mapMaze[self.currentX][self.currentY].respectedRR = 1
 
