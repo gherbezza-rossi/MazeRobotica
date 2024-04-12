@@ -242,6 +242,8 @@ class Maze(object):
     def goRight(self):
         print("- going right")
         self.turnRight()
+        if self.hasCurrentFrontWall:
+            print("READ CAM")
         time.sleep(0.5) 
         self.goFwd()
         print("- gone right")
@@ -360,7 +362,7 @@ class Maze(object):
 
         walls = [left, front, right, 0]  # walls = [left, front, right, back]
         if first:
-            walls[3] = 0
+            walls[3] = 1
 
         self.addBlockData(walls)
         self.assignNumber()

@@ -9,10 +9,10 @@ from MazeClass import *
 
 def move(first):
     print("first visited")
-    if not myMaze.currentBlock().isVisited():
-        walls, dati = myMaze.getValues(first)
-        right_distance = dati[4]
-        left_distance = dati[5]
+#    if not myMaze.currentBlock().isVisited():
+    walls, dati = myMaze.getValues(first)
+    right_distance = dati[4]
+    left_distance = dati[5]
 
 
     if myMaze.isAllVisited():

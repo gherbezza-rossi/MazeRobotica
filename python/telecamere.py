@@ -60,11 +60,11 @@ def find_square_shapes_right():
             roi = hsv[y:y+h, x:x+w]
             # Calcolare la media dei valori di colore nella regione di interesse
             avg_hue = np.mean(roi[:,:,0])
-            if avg_hue >= 30 and avg_hue <= 45: # Giallo
+            if avg_hue >= 25 and avg_hue <= 45: # Giallo
                 color = "Giallo"
             elif avg_hue >= 50 and avg_hue <= 75: # Verde
                 color = "Verde"
-            elif avg_hue >= 10 and avg_hue <= 25: # Rosso
+            elif avg_hue >= 130 and avg_hue <= 160: # Rosso
                 color = "Rosso"
             else:
                 color = "Altro"
@@ -95,16 +95,18 @@ def read_image_letter_left():
     #border_img2 = cv2.copyMakeBorder(thresh2, 50, 50, 50, 50, cv2.BORDER_CONSTANT, value=255)
     cv2.imwrite("/home/sirio/Desktop/thresh_image_left.png", thresh2)
     txt2 = pytesseract.image_to_string(thresh2, config='--psm 6')
-    print(txt2) 
     num_letters = sum(c.isalpha() for c in txt2)
 
     # Se ci sono meno di 3 caratteri alfabetici, controlla la presenza di 'U', 'S' o 'H'
     if num_letters < 3:
         if 'U' in txt2:
+            print("U")
             return 'U'
         elif 'S' in txt2:
+            print("S")
             return 'S'
         elif 'H' in txt2:
+            print("H")
             return 'H'
     return None  # Non restituire nulla se non soddisfa i criteri
 
@@ -139,4 +141,5 @@ def find_square_shapes_left():
             
     cv2.imwrite("/home/sirio/Desktop/mask_image_left.png", img)
     return color
+
 
